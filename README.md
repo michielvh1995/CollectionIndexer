@@ -28,7 +28,4 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## ToDo
 This is a list of all tasks that are to be completed
-* turn this list into issues
-* Refactor the messages component into the shared module
-* Refactor the features module so that each component is moved into it correctly
 * Implement a config file for the CollecteDB API service
