@@ -24,6 +24,7 @@ export class CollecteDBService  {
       this.messageService.add(`CollecteDB API Service: ${message}`);
     }
 
+    // TODO
     // URL for the API, this needs to be configurable from a config file in the future
     private apiURL = "http://localhost:8000/"
 
@@ -31,7 +32,7 @@ export class CollecteDBService  {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
 
-
+    // TODO
     // Turn a card from the old card model into the new one, as used by the API
     packAPICard(card : Card) : APICard {
       let version : CardVersion = {
@@ -50,6 +51,7 @@ export class CollecteDBService  {
       };
     }
 
+    // TODO
     // Unpack function to convert the APICard model to the regular card model. 
     // In other words it turns the APICard model into a list of Cards.
     // Each version of the card becomes its own card here
@@ -70,6 +72,7 @@ export class CollecteDBService  {
       return unpacked as Card[];
     }
 
+    // TODO
     // This function turns the response of the API into a list of cards.
     // This is done using the unpackAPICard function as helper function
     // the CardsAPIModel contains a list of Cards in the API format, 
