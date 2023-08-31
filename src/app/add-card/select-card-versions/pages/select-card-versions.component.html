@@ -1,0 +1,31 @@
+<div class="carddetails">
+    <div *ngIf="!submitted">
+        <form class="selector-form" [formGroup]="cardSelectorForm" (ngSubmit)="onCardSearch()">   
+            <label for="card-name">Search card:</label>
+            
+            <input id="card-name" placeholder="Name" type ="text" formControlName="cardNameControl">
+            <input id="card-set" placeholder="Set" type ="text" formControlName="cardSetControl">
+        
+            <button type="submit" [disabled]="!cardSelectorForm.valid" >Search</button>  
+            <button class="add-button" (click)="addSelection()">+</button>
+          </form>
+        
+          <div class="card-version-selection" *ngIf="queriedCards">
+            <p *ngIf="queriedCards.length==0">No cards found</p>
+
+            <span *ngFor="let card of queriedCards">
+                <app-card-selector [card]="card"></app-card-selector>
+            </span>
+
+          </div>
+    </div>
+    <div *ngIf="submitted">
+        <label for="card-name">Added cards:</label>
+        <input id="card-name" [disabled]="true" value={{cardSelectorForm.value.cardNameControl}} type ="text">
+        <input id="card-set" [disabled]="true" value={{cardSelectorForm.value.cardSetControl}} type ="text">
+        
+        <label for="card-count">Total cards added:</label>
+        <input id="card-count"[disabled]="true" value={{this.cardCount}} type ="text">
+    </div>
+
+</div>

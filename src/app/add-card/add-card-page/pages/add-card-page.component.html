@@ -1,0 +1,10 @@
+<h2>Add cards</h2>
+
+<div *ngFor="let status of indices" class="multi-card-selector">
+    <app-select-card-versions (addCardsEvent)="addCards($event)"></app-select-card-versions>
+</div>
+
+Last cards:
+<ul>
+  <li *ngFor="let item of items">{{item.name}}</li>
+</ul>
