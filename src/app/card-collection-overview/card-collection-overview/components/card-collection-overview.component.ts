@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 
-import { CollecteDBService } from 'src/app/shared/collecteDB/collecte-db.service';
-import { MessageService } from 'src/app/shared/messages/services/messages.service';
-import { Card } from 'src/app/shared/models/card';
+import { CollecteDBService } from '../../../shared/collecteDB/collecte-db.service';
+import { MessageService } from '../../../shared/messages/services/messages.service';
+import { Card } from '../../../shared/models/card';
 
 @Component({
   selector: 'app-card-collection-overview',

@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { APICard, CardVersion } from 'src/app/shared/models/api';
+import { APICard, CardVersion } from '../../../shared/models/api';
 
 @Component({
   selector: 'app-card-selector',

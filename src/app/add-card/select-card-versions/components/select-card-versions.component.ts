@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
-import { APICard } from 'src/app/shared/models/api';
-import { WizardsAPIService } from 'src/app/shared/wizardsAPI/wizards-api.service';
+import { APICard } from '../../../shared/models/api';
+import { WizardsAPIService } from '../../../shared/wizardsAPI/wizards-api.service';
 import { CardSelectorComponent } from '../../card-selector/components/card-selector.component';
 
 @Component({

@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { Location } from '@angular/common';
 
-import { CollecteDBService } from 'src/app/shared/collecteDB/collecte-db.service';
-import { APICard } from 'src/app/shared/models/api';
-
+import { CollecteDBService } from '../../../shared/collecteDB/collecte-db.service'
+import { APICard } from '../../../shared/models/api';
 
 @Component({
   selector: 'app-add-card-page',
