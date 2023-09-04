@@ -3,10 +3,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, map, of, tap } from 'rxjs';
 
 import { MessageService } from '../messages/services/messages.service';
-import { APICard } from '../models/api';
+import { Card } from '../models/card';
 
 interface CardsAPIModel {
-  Cards: APICard[];
+  Cards: Card[];
 }
 
 @Injectable({
@@ -31,7 +31,7 @@ export class CollecteDBService  {
 
     // Query the server for all cards, via cards/all. 
     // Might have to update this function to allow for pagination
-    getAllCards(): Observable<APICard[]> {
+    getAllCards(): Observable<Card[]> {
       return this.http.get<CardsAPIModel>(`${this.apiURL}cards/all`)
         .pipe(
           catchError(this.handleError<CardsAPIModel>('Get all cards', {"Cards":[]})),
@@ -41,7 +41,7 @@ export class CollecteDBService  {
     }
   
     // Query the server for cards with field/constraint pairs as a dictionary
-    searchCardsByFieldsValues(parameters : {[field : string]: string}) : Observable<APICard[]> {    
+    searchCardsByFieldsValues(parameters : {[field : string]: string}) : Observable<Card[]> {    
       // First we build up the query string based on the field-value pairs; so it becomes:
       // ?field1=valu1e&field2=value2&
       var queryString = `?`
@@ -61,7 +61,7 @@ export class CollecteDBService  {
     }
 
     // Query the server on a single field with a value
-    searchCardsByField(field:string, value:string) : Observable<APICard[]>  {
+    searchCardsByField(field:string, value:string) : Observable<Card[]>  {
       return this.http.get<CardsAPIModel>(`${this.apiURL}cards?${field}=${value}`)
         .pipe(
           catchError(this.handleError<CardsAPIModel>('Get cards by internal ID', {"Cards":[]})),
@@ -71,7 +71,7 @@ export class CollecteDBService  {
     }
 
     // This function can be used to post a single new card to the server
-    postNewCards(cards : APICard[]) : Observable<CardsAPIModel> {
+    postNewCards(cards : Card[]) : Observable<CardsAPIModel> {
       this.log(`Posting ${cards.length} cards`);
       let cardWrapper : CardsAPIModel = {"Cards" : cards };
       

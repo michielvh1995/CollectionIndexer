@@ -5,11 +5,11 @@
     <a>
       <span class ="name">{{card.name | titlecase}}</span>
       <span class ="count">{{this.countCards(card)}}</span>
-      <span style="background-color: navajowhite;">
+      <!-- <span style="background-color: navajowhite;">
         Oke, wat ik hier wil gaan doen is het volgende:
         Ik wil dat de informatie hieronder in de code verborgen is, tot je op de kaart klikt.
         Zodra je op de kaart klikt, popt de informatie eronder uit.
-      </span>
+      </span> -->
       <span *ngFor="let version of card.versions">
         <span class ="setcode">{{version.set_code}}</span>
         <span class ="number">{{version.number}}</span>

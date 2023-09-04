@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Location } from '@angular/common';
 
 import { CollecteDBService } from '../../../shared/collecteDB/collecte-db.service'
-import { APICard } from '../../../shared/models/api';
+import { Card } from '../../../shared/models/card';
 
 @Component({
   selector: 'app-add-card-page',
@@ -17,11 +17,11 @@ export class AddCardPageComponent {
     
   }
 
-  items? : APICard[];
+  items? : Card[];
   submittedStatus = [true];
   indices = [1];
 
-  addCards(cards : APICard[]) {
+  addCards(cards : Card[]) {
     this.items = cards;
     
     // This is done to create a new instance of the mutli-card-selector

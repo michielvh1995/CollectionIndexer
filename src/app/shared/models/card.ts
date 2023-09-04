@@ -1,4 +1,4 @@
-export interface APICard {
+export interface Card {
     internal_id?: number;
     name: string;
 
@@ -20,5 +20,5 @@ export interface CardVersion {
 }
 
 export interface CardsAPIModel {
-    Cards : APICard[];
+    Cards : Card[];
 }
