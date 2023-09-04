@@ -1,12 +1,19 @@
 <h2>My Card Collection</h2>
+
 <ul class="cards">
-    <li *ngFor="let card of cards">
-      <a>
-        <span class ="badge">{{card.internal_id}}</span>
-        <span class ="name">{{card.name | titlecase}}</span>
-        <span class ="count">{{card.card_count}}</span>
-        <span class ="setcode">{{card.set_code}}</span>
-        <span class ="number">{{card.number}}</span>
-      </a>
-    </li>
+  <li *ngFor="let card of cards">
+    <a>
+      <span class ="name">{{card.name | titlecase}}</span>
+      <span class ="count">{{this.countCards(card)}}</span>
+      <span style="background-color: navajowhite;">
+        Oke, wat ik hier wil gaan doen is het volgende:
+        Ik wil dat de informatie hieronder in de code verborgen is, tot je op de kaart klikt.
+        Zodra je op de kaart klikt, popt de informatie eronder uit.
+      </span>
+      <span *ngFor="let version of card.versions">
+        <span class ="setcode">{{version.set_code}}</span>
+        <span class ="number">{{version.number}}</span>
+      </span>
+    </a>
+  </li>
 </ul>

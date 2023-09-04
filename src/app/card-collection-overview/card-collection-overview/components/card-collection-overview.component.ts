@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 import { CollecteDBService } from '../../../shared/collecteDB/collecte-db.service';
 import { MessageService } from '../../../shared/messages/services/messages.service';
-import { Card } from '../../../shared/models/card';
+import { APICard, CardVersion } from '../../../shared/models/api';
 
 @Component({
   selector: 'app-card-collection-overview',
@@ -10,16 +10,24 @@ import { Card } from '../../../shared/models/card';
   styleUrls: ['../pages/card-collection-overview.component.scss']
 })
 export class CardCollectionOverviewComponent {
-  cards: Card[] = [];
+  cards : APICard[] = [];
 
-  constructor(private cardService: CollecteDBService, private messageService: MessageService) {}
+  constructor(private collecteDBService: CollecteDBService, private messageService: MessageService) {}
 
   ngOnInit(): void {
     this.getAllCards();
   }
 
   getAllCards() : void {
-    this.cardService.getAllCards().subscribe(fetched => this.cards = fetched);
-  
+    this.collecteDBService.getAllCards().subscribe(fetched => this.cards = fetched);
+  }
+
+  countCards(card: APICard) : number {
+    var cnt = 0;
+    for (var version of card.versions)
+      cnt += version.card_count;
+    
+    console.log(cnt);
+    return cnt;
   }
 }
