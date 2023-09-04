@@ -1,6 +1,11 @@
 export interface Card {
-    internal_id: number | undefined;
+    internal_id?: number;
     name: string;
+
+    versions : CardVersion[];
+}
+
+export interface CardVersion {
     card_count: number;
 
     // These are the properties maintained by wizards of the coast
@@ -12,4 +17,8 @@ export interface Card {
     location? : string;
 
     foil? : boolean;
-  }
+}
+
+export interface CardsAPIModel {
+    Cards : Card[];
+}

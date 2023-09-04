@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { APICard, CardVersion } from '../../../shared/models/api';
+import { Card, CardVersion } from '../../../shared/models/card';
 
 @Component({
   selector: 'app-card-selector',
@@ -24,7 +24,7 @@ export class CardSelectorComponent {
     foilCountControl: new FormControl(0)
   });
 
-  @Input() public card! : APICard;
+  @Input() public card! : Card;
   public totalSelected = 0;
 
   getUrl() {

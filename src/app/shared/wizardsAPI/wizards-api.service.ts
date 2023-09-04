@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, map, of, tap } from 'rxjs';
 
 import { MessageService } from '../messages/services/messages.service';
-import { APICard, CardVersion } from '../models/api';
+import { Card, CardVersion } from '../models/card';
 
 
 @Injectable({
@@ -26,7 +26,7 @@ export class WizardsAPIService {
     };
 
     castIntoAPICardObjects(fetchedCards : wizardsAPICardObject) {
-      var cardsArray : APICard[] = [];
+      var cardsArray : Card[] = [];
       for (let i = 0; i < fetchedCards.cards.length; i++) {
         const card = fetchedCards.cards[i];
 

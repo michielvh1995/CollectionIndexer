@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
-import { APICard } from '../../../shared/models/api';
+import { Card } from '../../../shared/models/card';
 import { WizardsAPIService } from '../../../shared/wizardsAPI/wizards-api.service';
 import { CardSelectorComponent } from '../../card-selector/components/card-selector.component';
 
@@ -15,7 +15,7 @@ export class SelectCardVersionsComponent  {
     private wizardsAPIService : WizardsAPIService
     ) { }
     
-    queriedCards? : APICard[];
+    queriedCards? : Card[];
     
     // Used to read data from the card-selectors per card version
     @ViewChildren(CardSelectorComponent) private selectors? : QueryList<CardSelectorComponent>;
@@ -24,7 +24,7 @@ export class SelectCardVersionsComponent  {
     @Input() success = false;
 
     // Used to notify the parent of card submission
-    @Output() addCardsEvent  = new EventEmitter<APICard[]>();
+    @Output() addCardsEvent  = new EventEmitter<Card[]>();
 
     cardSelectorForm = new FormGroup({
       cardNameControl: new FormControl(''),
@@ -53,7 +53,7 @@ export class SelectCardVersionsComponent  {
     // Once we press the add cards button we add all the selected cards and versions to the selected list
     // This selected list is then pushed to the parent.
     addSelection() {
-      var selectedCards : APICard[] = [];
+      var selectedCards : Card[] = [];
 
       this.selectors?.forEach(selector => {
         // Set the data in the card
