@@ -1,5 +1,12 @@
 # CollectionIndexer
 
+This is the Angular2 based front end of the CardIndexer project. This is a project I am working on whilst rehabilitating. The goal of this project is to be able to display my Magic: the Gathering card collection.
+
+I want to be able to both index what I have for myself, and be able to give my friends an easy way to browse my cards for anything they would like to trade/buy from me.
+
+
+# Angular2
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.1.2.
 
 ## Development server
@@ -25,7 +32,3 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
-
-## ToDo
-This is a list of all tasks that are to be completed
-* Implement a config file for the CollecteDB API service
