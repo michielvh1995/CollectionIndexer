@@ -4,6 +4,32 @@ This is the Angular2 based front end of the CardIndexer project. This is a proje
 
 I want to be able to both index what I have for myself, and be able to give my friends an easy way to browse my cards for anything they would like to trade/buy from me.
 
+## Components overview
+In this project are the following components:
+* The add card page
+* The card collection page
+
+The following are still going to be added:
+* Create/update decks page
+* Decks overview page
+* Deck information page
+
+### The add card page
+The add card page consists of three components:
+1. The `add-card-page` component
+2. The `select-card-versions` component
+3. The `card-selector` component
+
+The `add-card-page` component creates multiple `select-card-versions` components. 
+These are used to search and select the cards to be added.
+
+Each result found on the mtg.io API is displayed as a `card-selector` component. These are the children of the `select-card-versions` component.
+Each of these displays the card image, its name and extra finishes of these cards (i.e. oil slick or serialization).
+
+### The card collection page
+The card collection page displays all cards I have in my collection.
+This is a work in progress
+
 
 # Angular2
 

@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Card, CardVersion } from '../../../shared/models/card';
+import { ScryfallAPIService } from '../../../shared/scryfallAPI/scyfall-api.service';
 
 @Component({
   selector: 'app-card-selector',
@@ -8,15 +9,25 @@ import { Card, CardVersion } from '../../../shared/models/card';
   styleUrls: ['../pages/card-selector.component.scss']
 })
 export class CardSelectorComponent {
-  constructor() {}
+  constructor(private scryfallAPIService : ScryfallAPIService) {}
   
+  image_url : string = "";
+  promotypes? : string[];
+
   ngOnInit() {
     // Call the scryfall API for information
-    this.getUrl();
+    this.getInformation();
   }
 
-  url = "";
+  getInformation() {
+    this.scryfallAPIService.getCardInformation(this.card.versions[0].set_code, this.card.versions[0].number).subscribe( res => {
+      if(res.image_uris !== undefined)
+        this.image_url = res.image_uris["large"];
 
+        if(res.promo_types !== undefined)
+          this.promotypes = res.promo_types
+    })
+  }
 
 
   cardCounterForm = new FormGroup({
@@ -28,7 +39,7 @@ export class CardSelectorComponent {
   public totalSelected = 0;
 
   getUrl() {
-    this.url=`https://api.scryfall.com/cards/${this.card.versions[0].set_code}/${this.card.versions[0].number}?format=image`;
+    this.image_url=`https://api.scryfall.com/cards/${this.card.versions[0].set_code}/${this.card.versions[0].number}?format=image`;
 
     console.log(`https://api.scryfall.com/cards/${this.card.versions[0].set_code}/${this.card.versions[0].number}?format=image`)
     return `https://api.scryfall.com/cards/${this.card.versions[0].set_code}/${this.card.versions[0].number}?format=image`
