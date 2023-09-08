@@ -13,6 +13,7 @@ export class CardSelectorComponent {
   
   image_url : string = "";
   promotypes? : string[];
+  finishes? : string[];
 
   ngOnInit() {
     // Call the scryfall API for information
@@ -22,10 +23,12 @@ export class CardSelectorComponent {
   getInformation() {
     this.scryfallAPIService.getCardInformation(this.card.versions[0].set_code, this.card.versions[0].number).subscribe( res => {
       if(res.image_uris !== undefined)
-        this.image_url = res.image_uris["large"];
+        this.image_url = res.image_uris["normal"];
 
         if(res.promo_types !== undefined)
           this.promotypes = res.promo_types
+        if(res.finishes !== undefined)
+          this.finishes = res.finishes
     })
   }
 

@@ -9,10 +9,7 @@
     border-color: darkgrey;
 }
 
-.carddisplay {
-    width: 265px;
-    height: 370px;
-}
+
 
 input {
     width: 50px;
@@ -20,5 +17,33 @@ input {
 
 .count-form {
     margin: auto;
-    width: 75%;
+    width: 90%;
+}
+
+$cardheight: 370px;
+
+.imgcontainer {
+    width: 265px;
+    height: $cardheight;
+    
+    background-size:contain;
+    
+    .promotypes-container {
+        background-color: rgba(100,0,0, 1);
+        border-radius: 3px;
+
+        color: white;
+        position: relative;
+
+        padding-left: 5px;
+        padding-right: 5px;
+
+        display: table;
+        margin: 0 auto;
+        margin-top: 1px;
+        top: $cardheight - 100px;
+
+    }
+
+
 }

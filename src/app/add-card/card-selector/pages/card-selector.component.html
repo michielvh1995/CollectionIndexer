@@ -6,9 +6,20 @@
         <label for="foil-count">Foil:</label>
         <input id="foil-count" type ="number" min="0" formControlName="foilCountControl">
     </form>
+
+    <!-- <form style="margin:20px;">
+        <span *ngFor="let finish of finishes">
+            <label>{{finish}}</label>
+            <input id="regular-count" type ="number" min="0">
+        </span>
+    </form> -->
     
-    <div class="imgcontainer">
-        <img class="carddisplay" src="{{image_url}}"/>
+    <div class="imgcontainer"
+        [ngStyle]="{ 'background-image': 'url(' + image_url + ')'}">
+        <!-- <img class="carddisplay" src="{{image_url}}"/> -->
+        <div *ngFor="let promotype of promotypes" class="promotypes-container">
+            <span>{{promotype}}</span>
+        </div>
     </div>
 
     <!-- https://api.scryfall.com/cards/{{card.versions[0].set_code}}/{{card.versions[0].number}}?format=image -->
