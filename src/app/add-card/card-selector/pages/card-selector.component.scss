@@ -1,4 +1,4 @@
-
+$cardheight: 370px;
 
 .selector-container {
     display: inline-block;
@@ -9,18 +9,26 @@
     border-color: darkgrey;
 }
 
-
-
-input {
-    width: 50px;
-}
-
 .count-form {
     margin: auto;
     width: 90%;
+    position: relative;
+
+    label {
+        margin-right: 2px;
+        margin-left: 7px;
+    }
+
+    input {
+        width: 50px;
+    }
+
+
 }
 
-$cardheight: 370px;
+
+
+
 
 .imgcontainer {
     width: 265px;
