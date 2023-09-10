@@ -22,6 +22,7 @@ export class CardCollectionOverviewComponent {
     this.collecteDBService.getAllCards().subscribe(fetched => this.cards = fetched);
   }
 
+  // For displaying how many cards are in the collection in total
   countCards(card: Card) : number {
     var cnt = 0;
     for (var version of card.versions)

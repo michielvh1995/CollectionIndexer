@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ScyfallAPIService } from './scyfall-api.service';
+import { ScryfallAPIService } from './scyfall-api.service';
 
 describe('ScyfallAPIService', () => {
-  let service: ScyfallAPIService;
+  let service: ScryfallAPIService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ScyfallAPIService);
+    service = TestBed.inject(ScryfallAPIService);
   });
 
   it('should be created', () => {

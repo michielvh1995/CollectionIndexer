@@ -1,18 +1,20 @@
-
 <div class="selector-container">
-    <form class="count-form" [formGroup]="cardCounterForm" (ngSubmit)="readData()">   
-        <label for="regular-count">Regular:</label>
-        <input id="regular-count" type ="number" min="0" formControlName="countControl">
-        
-        <label for="foil-count">Foil:</label>
-        <input id="foil-count" type ="number" min="0" formControlName="foilCountControl">
+
+    <form class="count-form" [formGroup]="finishCounterForm" (ngSubmit)="readData()">   
+        <div formArrayName="cardCounts">
+            <span *ngFor="let finish of finishes; let i=index">
+                <label>{{finish | titlecase}}</label>
+                <input type ="number" min="0" [formControlName]="i">
+            </span>
+        </div>
     </form>
     
-    <div class="imgcontainer">
-        <img class="carddisplay" src="{{url}}"/>
+    <div class="imgcontainer"
+        [ngStyle]="{ 'background-image': 'url(' + image_url + ')'}">
+        <!-- <img class="carddisplay" src="{{image_url}}"/> -->
+        <div *ngFor="let promotype of promotypes" class="promotypes-container">
+            <span>{{promotype | titlecase}}</span>
+        </div>
     </div>
-
-    <!-- https://api.scryfall.com/cards/{{card.versions[0].set_code}}/{{card.versions[0].number}}?format=image -->
-
 
 </div>

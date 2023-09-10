@@ -1,4 +1,4 @@
-
+$cardheight: 370px;
 
 .selector-container {
     display: inline-block;
@@ -9,16 +9,52 @@
     border-color: darkgrey;
 }
 
-.carddisplay {
-    width: 265px;
-    height: 370px;
-}
-
-input {
-    width: 50px;
-}
-
 .count-form {
     margin: auto;
-    width: 75%;
+    width: 90%;
+    position: relative;
+
+    label {
+        margin-right: 2px;
+        margin-left: 7px;
+    }
+
+    input {
+        width: 50px;
+    }
+
+
+}
+
+
+
+
+
+.imgcontainer {
+    width: 265px;
+    height: $cardheight;
+    
+    background-size:contain;
+    
+    .promotypes-container {
+        background-color: rgba(100,0,0, 1);
+
+        border-color: rgb(200, 200, 200);
+        border-width: 2px;
+        border-style: solid;
+        border-radius: 5px;
+
+        color: white;
+        position: relative;
+
+        padding: 3px 5px;
+
+        display: table;
+        margin: 0 auto;
+        margin-top: 1px;
+        top: $cardheight - 100px;
+
+    }
+
+
 }
