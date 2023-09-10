@@ -1,24 +1,61 @@
 <div class="selector-container">
-    <form class="count-form" [formGroup]="cardCounterForm" (ngSubmit)="readData()">   
+    <!-- <form class="count-form" [formGroup]="cardCounterForm" (ngSubmit)="readData()">   
         <label for="regular-count">Regular:</label>
         <input id="regular-count" type ="number" min="0" formControlName="countControl">
         
         <label for="foil-count">Foil:</label>
         <input id="foil-count" type ="number" min="0" formControlName="foilCountControl">
-    </form>
+    </form> -->
 
     <!-- <form style="margin:20px;">
+        <div *ngFor="let control of finishCounterForm.controls; index as i">
+            <input type ="number" min="0" [formControl]="finishCounterForm.controls[i]">
+        </div>
         <span *ngFor="let finish of finishes">
-            <label>{{finish}}</label>
+            <label>{{finish | titlecase}}</label>
+            <input type ="number" min="0" [formControl]="finishCounterForm[finish]">
             <input id="regular-count" type ="number" min="0">
         </span>
     </form> -->
+    <!-- <div formArrayName="finishControls">
+        <span *ngFor="let finish of finishControls['controls']; let i=index">
+            <input type ="number" min="0" [formControlName]="i">
+        </span>
+    </div> -->
+
+
+
+    <div [formGroup]="finishCounterForm">
+        <div formArrayName="cardCounts">
+            <span *ngFor="let finish of finishes; let i=index">
+                <label>{{finish | titlecase}}</label>
+                <input type ="number" min="0" [formControlName]="i">
+                <!-- <input id="regular-count" type ="number" min="0"> -->
+            </span>
+        </div>
+    </div>
     
+
+
+
+
+
+
+    <!--
+    THIS ONE WORKS WITHOUT LABELS
+         
+    <div [formGroup]="finishCounterForm">
+        <div formArrayName="cardCounts">
+            <span *ngFor="let finish of tc.controls; let i=index">
+                <input type ="number" min="0" [formControlName]="i">
+            </span>
+        </div>
+    </div> -->
     <div class="imgcontainer"
         [ngStyle]="{ 'background-image': 'url(' + image_url + ')'}">
         <!-- <img class="carddisplay" src="{{image_url}}"/> -->
         <div *ngFor="let promotype of promotypes" class="promotypes-container">
-            <span>{{promotype}}</span>
+            <span>{{promotype | titlecase}}</span>
         </div>
     </div>
 

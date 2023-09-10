@@ -30,13 +30,16 @@ $cardheight: 370px;
     
     .promotypes-container {
         background-color: rgba(100,0,0, 1);
-        border-radius: 3px;
+
+        border-color: rgb(200, 200, 200);
+        border-width: 2px;
+        border-style: solid;
+        border-radius: 5px;
 
         color: white;
         position: relative;
 
-        padding-left: 5px;
-        padding-right: 5px;
+        padding: 3px 5px;
 
         display: table;
         margin: 0 auto;
