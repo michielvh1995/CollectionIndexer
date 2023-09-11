@@ -30,6 +30,8 @@ Each of these displays the card image, its name and extra finishes of these card
 The card collection page displays all cards I have in my collection.
 This is a work in progress
 
+I want to have a collector's overview page, with pages per set. On each of these pages you can see what cards you have of the set and which cards you are missing.
+
 
 # Angular2
 
