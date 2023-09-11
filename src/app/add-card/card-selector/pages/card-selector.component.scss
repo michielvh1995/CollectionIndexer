@@ -1,4 +1,5 @@
 $cardheight: 370px;
+$cardwidth: 265px;
 
 .selector-container {
     display: inline-block;
@@ -27,11 +28,8 @@ $cardheight: 370px;
 }
 
 
-
-
-
 .imgcontainer {
-    width: 265px;
+    width: $cardwidth;
     height: $cardheight;
     
     background-size:contain;
@@ -53,7 +51,6 @@ $cardheight: 370px;
         margin: 0 auto;
         margin-top: 1px;
         top: $cardheight - 100px;
-
     }
 
 

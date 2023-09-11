@@ -36,4 +36,8 @@ button:disabled {
 .card-version-selection {
   margin-top: 0.4em;
   margin-left: 0.4em;
+
+  // // Activate this to enable sideways scrolling
+  // display: flex;
+  // overflow: scroll;
 }

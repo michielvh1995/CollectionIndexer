@@ -16,7 +16,7 @@ export class CardSelectorComponent {
   // Input field to determine what card we are displaying. All other information is derived from this
   @Input() public card! : Card;
   
-  // ScyrfallAPI data
+  // ScryfallAPI data
   image_url : string = "";
   promotypes? : string[];
   finishes? : string[];
