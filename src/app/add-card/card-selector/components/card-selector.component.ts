@@ -76,18 +76,20 @@ export class CardSelectorComponent {
   // because input is a single card with a version. We use that CardVersion for the scryfall API aswell
   private generateVersion(finish : string, count : number) : CardVersion {
 
-    // TEMPORARY: Remove this with the updated card model
-    var foilstatus = false;
-    if(finish != "nonfoil")
-      foilstatus = true;
-
+    console.log("GENERATE VERSION, HALLO");
+    
+    console.log(finish);
+    console.log(finish != "non foil");
+    
 
     return {
       "card_count" : count,
       "multiverseID" : this.card.versions[0].multiverseID,
       "set_code" : this.card.versions[0].set_code,
       "number" : this.card.versions[0].number,
-      "foil" : foilstatus,
+      
+      // TEMPORARY: Remove this with the updated card model
+      "foil" : (finish !== "non foil"),
       // "finish" : finish
     } 
   }

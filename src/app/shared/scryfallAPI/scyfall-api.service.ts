@@ -28,6 +28,13 @@ export class ScryfallAPIService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
+  // Oh dear...
+  // De scryfall API heeft veel meer opties dan de MTG.io API.
+  // Als gevolg kunnen we veel meer zoektermen toevoegen
+  searchForCards() {
+
+  }
+
   // Just get all the information we need from the Scryfall API.
   // This incldues the iamge and the promotypes array.
   // Later we can send this information to a buffer or to the collecteDB API
@@ -65,20 +72,28 @@ export class ScryfallAPIService {
 
 }
 
-
-export interface ScryfallCardAPIModel {
+interface ScryfallAPIModel {
   object : string;
 
   // Error response:
   code? : string;
   status? : number;
   details? : string;
+}
 
-  // Success response:
+
+export interface ScryfallCardAPIModel extends ScryfallAPIModel {
   id? : string;
   multiverse_ids? : number[];
   cardmarket_id? : number;
   image_uris? : { [key:string] : string };
   promo_types? : string[];
   finishes? : string[]
+}
+
+
+export interface ScryfallCardListAPIModel extends ScryfallAPIModel {
+  total_cards? : number;
+  has_more? : boolean;
+  data? : ScryfallCardAPIModel[];
 }

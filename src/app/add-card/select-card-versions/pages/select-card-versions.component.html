@@ -5,6 +5,12 @@
             
             <input id="card-name" placeholder="Name" type ="text" formControlName="cardNameControl">
             <input id="card-set" placeholder="Set" type ="text" formControlName="cardSetControl">
+
+            <input id ="w" type="radio">
+            <input id ="u" type="radio">
+            <input id ="b" type="radio">
+            <input id ="r" type="radio">
+            <input id ="g" type="radio">
         
             <button type="submit" [disabled]="!cardSelectorForm.valid" >Search</button>  
             <button class="add-button" (click)="addSelection()">+</button>
