@@ -75,13 +75,6 @@ export class CardSelectorComponent {
   // Here we can use the card.versions[0] for the values of the multiverseID etc,
   // because input is a single card with a version. We use that CardVersion for the scryfall API aswell
   private generateVersion(finish : string, count : number) : CardVersion {
-
-    console.log("GENERATE VERSION, HALLO");
-    
-    console.log(finish);
-    console.log(finish != "non foil");
-    
-
     return {
       "card_count" : count,
       "multiverseID" : this.card.versions[0].multiverseID,
