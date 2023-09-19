@@ -31,7 +31,17 @@ export class ScryfallAPIService {
   // Oh dear...
   // De scryfall API heeft veel meer opties dan de MTG.io API.
   // Als gevolg kunnen we veel meer zoektermen toevoegen
-  searchForCards() {
+  // Supported options:
+  // * colors: wubrg/c/m
+  // * name
+  // * set
+  // * type: land, creature, artifact, etc.
+  searchForCards(queryString : string) : Observable<ScryfallCardListAPIModel> {
+    return this.http.get<ScryfallCardListAPIModel>(`${this.apiURL}search/unique=prints&q=${queryString}`)
+    .pipe(
+      catchError(this.handleError<ScryfallCardListAPIModel>('getCardInfo')),
+      map(res => this.reportScryfallErrorcodes(res))
+    );  
 
   }
 
