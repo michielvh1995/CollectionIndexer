@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, Output, QueryList, ViewChildren, ViewCh
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { Card } from '../../../shared/models/card';
-import { WizardsAPIService } from '../../../shared/wizardsAPI/wizards-api.service';
 import { CardSelectorComponent } from '../../card-selector/components/card-selector.component';
 import { ColourSelectComponent } from '../../../shared/colour-select/components/colour-select.component';
 import { ScryfallAPIService } from '../../../shared/scryfallAPI/scyfall-api.service';
@@ -14,7 +13,6 @@ import { ScryfallAPIService } from '../../../shared/scryfallAPI/scyfall-api.serv
 })
 export class SelectCardVersionsComponent  {
   constructor(
-    private wizardsAPIService : WizardsAPIService,
     private scryfallAPIService: ScryfallAPIService
     ) { }
     

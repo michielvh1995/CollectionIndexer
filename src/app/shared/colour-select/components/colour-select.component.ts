@@ -7,9 +7,8 @@ import { FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['../pages/colour-select.component.scss']
 })
 export class ColourSelectComponent {
-  constructor() {}
-  ngOnInit(){  }
-
+  constructor() {
+  }
   colourSelection = new FormGroup({
     wControl: new FormControl(false),
     uControl: new FormControl(false),
@@ -19,7 +18,6 @@ export class ColourSelectComponent {
     cControl: new FormControl(false),
     matchControl : new FormControl('=')
   });
-
 
   validation() : boolean {
     if(this.colourSelection.value.cControl && this.colourSelection.value.matchControl != "<=") {
@@ -32,42 +30,30 @@ export class ColourSelectComponent {
     return true;
   }
 
-  public ReadData() : string[] {
-    // If the form is invalid yield nothing.
-    // Otherwise we yield a string array with [match, colours]    
-    if(!this.validation()) return [];
-    
-    var outputArray :string[] = [this.colourSelection.value.matchControl!];
-    
-    if(this.colourSelection.value.wControl) outputArray.push('w');
-    if(this.colourSelection.value.uControl) outputArray.push('u');
-    if(this.colourSelection.value.bControl) outputArray.push('b');
-    if(this.colourSelection.value.rControl) outputArray.push('r');
-    if(this.colourSelection.value.gControl) outputArray.push('g');
-    if(this.colourSelection.value.cControl) outputArray.push('c');
+  // Reading the data from the colourpicker yields a ColourSelection.
+  public ReadData() : ColourSelection {  
+    var colourFilter = new ColourSelection(
+      this.colourSelection.value.wControl!,
+      this.colourSelection.value.uControl!,
+      this.colourSelection.value.bControl!,
+      this.colourSelection.value.rControl!,
+      this.colourSelection.value.gControl!,
+      this.colourSelection.value.cControl!,
+      this.colourSelection.value.matchControl!);
 
-    return outputArray;
+    return colourFilter;
   }
 
+  // I want to move this function from here to a superclass that gnerates the entire query
   public GenerateScryfallQuery() : string {
-    var data = this.ReadData();
-    if(data.length <= 1) return ""
-    
-    if(!this.colourSelection.value.cControl) {
-      var negate = "";
-      for (let i = 0; i < data.length; i++) {
-        const colour = data[i];
-        negate += `c>=${colour}`;
-        
-      }
-    }
+    var filter = new CardFilter(undefined, undefined, this.ReadData());
 
-    return `id${data.concat('')}`;
+    
+    console.log(`Filter is: ${filter.GenerateScryfallQuery()}`);
+    
+    return filter.GenerateScryfallQuery();
   }
 }
-
-
-
 
 export class ColourSelection {
   public W : boolean;
@@ -104,48 +90,55 @@ export class ColourSelection {
     };
     return true;
   }
+
+  public ToScryfallQuery() : string {
+    if(!this.Validate()) return "";
+
+    // Generate the base query.
+    var query : string = "";
+    if(this.W) query += 'w';
+    if(this.U) query += 'u';
+    if(this.B) query += 'b';
+    if(this.R) query += 'r';
+    if(this.G) query += 'g';
+    if(this.C) query += 'c';
+
+    if(query === "") return query;
+    query = `+id${this.MatchType}${query}`;
+
+    // Alright, now we have the weird case, we want to subset without getting colourless cards:
+    if(!this.C && this.MatchType == '<=') {
+      var cols : string[] = [];
+      if(this.W) cols.push("id>=w");
+      if(this.U) cols.push("id>=u");
+      if(this.B) cols.push("id>=b");
+      if(this.R) cols.push("id>=r");
+      if(this.G) cols.push("id>=g");
+      query += `+(${cols.join("+or+")})`
+    }
+
+    return query;
+  }
 }
 
-export class FilterValues {
+export class CardFilter {
   public Colours? : ColourSelection;
   public Name? : string;
   public Setname? : string;
 
-  constructor(name? : string, set? : string, colourSelection? : ColourSelection) {
-    this.Colours = colourSelection;
+  constructor(name? : string, set? : string, colourFilter? : ColourSelection) {
+    this.Colours = colourFilter;
     this.Name = name;
     this.Setname = set;
   }
 
-
-  private coloursToScryfall() : string {
-    if(!this.Colours) return "";
-
-    // Generate the base query.
-    var query = `id${this.Colours.MatchType}`;
-    if(this.Colours.W) query += 'w';
-    if(this.Colours.U) query += 'u';
-    if(this.Colours.B) query += 'b';
-    if(this.Colours.R) query += 'r';
-    if(this.Colours.G) query += 'g';
-    if(this.Colours.C) query += 'c';
-
-    // Alright, now we have the weird case, we want to subset without getting colourless cards:
-    if(!this.Colours.C && this.Colours.MatchType == '<=') {
-      var cols : string[] = [];
-      if(this.Colours.W) cols.push("id>=u");
-      if(this.Colours.U) cols.push("id>=u");
-      if(this.Colours.B) cols.push("id>=b");
-      if(this.Colours.R) cols.push("id>=r");
-      if(this.Colours.G) cols.push("id>=g");
-      query += `+(${cols.concat("+or+")})`
-    }
-
+  public GenerateScryfallQuery() : string {
+    var query: string = "";
     
+    if(this.Name) query+= `"${this.Name}"`;
+    if(this.Setname) query += `+${this.Setname}`;
+    if(this.Colours) query += this.Colours.ToScryfallQuery();
     return query;
   }
-  public GenerateScryfallQuery() : string {
-    return "";
 
-  }
 }
