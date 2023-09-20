@@ -1,9 +1,11 @@
-import { Component, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
+import { Component, EventEmitter, Input, Output, QueryList, ViewChildren, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { Card } from '../../../shared/models/card';
 import { WizardsAPIService } from '../../../shared/wizardsAPI/wizards-api.service';
 import { CardSelectorComponent } from '../../card-selector/components/card-selector.component';
+import { ColourSelectComponent } from '../../../shared/colour-select/components/colour-select.component';
+import { ScryfallAPIService } from '../../../shared/scryfallAPI/scyfall-api.service';
 
 @Component({
   selector: 'app-select-card-versions',
@@ -12,13 +14,15 @@ import { CardSelectorComponent } from '../../card-selector/components/card-selec
 })
 export class SelectCardVersionsComponent  {
   constructor(
-    private wizardsAPIService : WizardsAPIService
+    private wizardsAPIService : WizardsAPIService,
+    private scryfallAPIService: ScryfallAPIService
     ) { }
     
     queriedCards? : Card[];
     
     // Used to read data from the card-selectors per card version
     @ViewChildren(CardSelectorComponent) private selectors? : QueryList<CardSelectorComponent>;
+    @ViewChild(ColourSelectComponent) private colourSelector! : ColourSelectComponent;
 
     // TODO: make submission reversible on error
     @Input() success = false;
@@ -38,14 +42,29 @@ export class SelectCardVersionsComponent  {
       var cardName = this.cardSelectorForm.value.cardNameControl?.trim().toLowerCase();
       var cardSet = this.cardSelectorForm.value.cardSetControl?.trim().toLowerCase();
       
+
+
       // Return on empty query
       if(!cardName && !cardSet) return;
+
+      var queryString = `${this.colourSelector.GenerateScryfallQuery()}`;
+      console.log(queryString);
       
-      // Query the wizardsAPIService and set the queriedCards variable
-      this.wizardsAPIService.queryCardsByNameAndSet(cardName, cardSet)
-      .subscribe(fetched => {
+      if(cardName) queryString+=`+name:${cardName}`;
+      console.log(queryString);
+
+      if(cardSet)  queryString+=`+set:${cardSet}`;
+      console.log(queryString);
+
+      this.scryfallAPIService.searchForCards(queryString).subscribe(fetched => {
         this.queriedCards = fetched;
       });
+
+      // // Query the wizardsAPIService and set the queriedCards variable
+      // this.wizardsAPIService.queryCardsByNameAndSet(cardName, cardSet)
+      // .subscribe(fetched => {
+      //   this.queriedCards = fetched;
+      // });
     }
 
     cardCount = 0;

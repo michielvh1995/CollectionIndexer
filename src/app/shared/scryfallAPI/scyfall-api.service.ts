@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, map, of, tap } from 'rxjs';
 
 import { MessageService } from '../messages/services/messages.service';
+import { Card } from '../models/card';
 
 
 @Injectable({
@@ -28,6 +29,31 @@ export class ScryfallAPIService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
+  private scryfallListToCards(scryfallData:ScryfallCardListAPIModel) : Card[] {
+    // id? : string;
+    // multiverse_ids? : number[];
+    // cardmarket_id? : number;
+    // image_uris? : { [key:string] : string };
+    // promo_types? : string[];
+    // finishes? : string[]
+    var cardsArray : Card[] = [];
+    if(!scryfallData.data) return [];
+
+    for (let i = 0; i < scryfallData.data.length; i++) {
+        var card = {
+          "name" : scryfallData.data[i].name,
+          "versions" : [{
+            "card_count": 1,
+            "set_code" : scryfallData.data[i].set,
+            "number" : scryfallData.data[i].collector_number,
+          }]
+        } as Card;
+        cardsArray.push(card);
+    }
+
+    return cardsArray;
+  }
+
   // Oh dear...
   // De scryfall API heeft veel meer opties dan de MTG.io API.
   // Als gevolg kunnen we veel meer zoektermen toevoegen
@@ -36,13 +62,13 @@ export class ScryfallAPIService {
   // * name
   // * set
   // * type: land, creature, artifact, etc.
-  searchForCards(queryString : string) : Observable<ScryfallCardListAPIModel> {
-    return this.http.get<ScryfallCardListAPIModel>(`${this.apiURL}search/unique=prints&q=${queryString}`)
+  searchForCards(queryString : string) : Observable<Card[]> {
+    return this.http.get<ScryfallCardListAPIModel>(`${this.apiURL}search?unique=prints&q=${queryString}`)
     .pipe(
       catchError(this.handleError<ScryfallCardListAPIModel>('getCardInfo')),
-      map(res => this.reportScryfallErrorcodes(res))
+      tap(res => this.reportScryfallErrorcodes(res)),
+      map(res => this.scryfallListToCards(res))
     );  
-
   }
 
   // Just get all the information we need from the Scryfall API.
@@ -54,7 +80,7 @@ export class ScryfallAPIService {
     return this.http.get<ScryfallCardAPIModel>(`${this.apiURL}${set_code}/${number}`)
     .pipe(
       catchError(this.handleError<ScryfallCardAPIModel>('getCardInfo')),
-      map(res => this.reportScryfallErrorcodes(res))
+      tap(res => this.reportScryfallErrorcodes(res))
     );  
   }
 
@@ -99,6 +125,9 @@ export interface ScryfallCardAPIModel extends ScryfallAPIModel {
   image_uris? : { [key:string] : string };
   promo_types? : string[];
   finishes? : string[]
+  name? : string;
+  set?: string;
+  collector_number?: string;
 }
 
 

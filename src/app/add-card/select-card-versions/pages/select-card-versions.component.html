@@ -6,26 +6,7 @@
             <input id="card-name" placeholder="Name" type ="text" formControlName="cardNameControl">
             <input id="card-set" placeholder="Set" type ="text" formControlName="cardSetControl">
 
-            <span class="colourSelection">
-                <input name='w' value='white' id ="w" type="checkbox">
-                <label id="wl" for="w"></label>
-
-                <input name='u' value='blue' id ="u" type="checkbox">
-                <label id="ul" for="u"></label>
-
-                <input name='b' value='black' id ="b" type="checkbox">
-                <label id="bl" for="b"></label>
-
-                <input name='r' value='red' id ="r" type="checkbox">
-                <label id="rl" for="r"></label>
-
-                <input name='g' value='green' id ="g" type="checkbox">
-                <label id="gl" for="g"></label>
-
-                <input name='c' value='colourless' id ="c" type="checkbox">
-                <label id="cl" for="c"></label>
-
-            </span>
+            <app-colour-select></app-colour-select>
 
             <button type="submit" [disabled]="!cardSelectorForm.valid" >Search</button>  
             <button class="add-button" (click)="addSelection()">+</button>
