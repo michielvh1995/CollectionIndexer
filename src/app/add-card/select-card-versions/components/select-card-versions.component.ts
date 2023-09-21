@@ -57,12 +57,6 @@ export class SelectCardVersionsComponent  {
       this.scryfallAPIService.searchForCards(queryString).subscribe(fetched => {
         this.queriedCards = fetched;
       });
-
-      // // Query the wizardsAPIService and set the queriedCards variable
-      // this.wizardsAPIService.queryCardsByNameAndSet(cardName, cardSet)
-      // .subscribe(fetched => {
-      //   this.queriedCards = fetched;
-      // });
     }
 
     cardCount = 0;
