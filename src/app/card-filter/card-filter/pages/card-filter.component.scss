@@ -1,0 +1,47 @@
+.selector-form {
+    height: 55px;
+
+    .vertical {
+        display: inline-block;
+        margin-left: 2px;
+        margin-right: 7px;
+        position:relative;
+        top: 12px;
+
+        label {
+            display: table;
+        }
+        input {
+            display: table;
+        }
+    }
+}
+
+label {
+    color: #435960;
+    font-weight: bold;
+  }
+
+input {
+    font-size: 1em;
+    padding: .5rem;
+    display: inline
+}
+button {
+    margin-top: 10px;
+    background-color: #eee;
+    padding: .5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+button:hover {
+    background-color: #cfd8dc;
+}
+
+button:disabled {
+    background-color: #eee;
+    color: #ccc;
+    cursor: auto;
+}
+

@@ -1,7 +1,11 @@
 <h2>Add cards</h2>
 
-<div *ngFor="let status of indices" class="multi-card-selector">
+<!-- <div *ngFor="let status of indices" class="multi-card-selector">
     <app-select-card-versions (addCardsEvent)="addCards($event)"></app-select-card-versions>
+</div> -->
+
+<div class="multi-card-selector">
+  <app-card-search></app-card-search>
 </div>
 
 Last cards:

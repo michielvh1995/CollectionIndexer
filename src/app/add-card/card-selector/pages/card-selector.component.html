@@ -1,11 +1,12 @@
 <div class="selector-container">
-
     <form class="count-form" [formGroup]="finishCounterForm" (ngSubmit)="readData()">   
         <div formArrayName="cardCounts">
-            <span *ngFor="let finish of finishes; let i=index">
+            <span class="finish-container" *ngFor="let finish of finishes; let i=index">
                 <label>{{finish | titlecase}}</label>
                 <input type ="number" min="0" [formControlName]="i">
             </span>
+            <button type="submit">+</button>
+            
         </div>
     </form>
     

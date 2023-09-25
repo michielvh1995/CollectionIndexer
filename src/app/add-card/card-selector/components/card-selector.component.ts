@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Card, CardVersion } from '../../../shared/models/card';
 import { ScryfallAPIService, ScryfallCardAPIModel } from '../../../shared/scryfallAPI/scyfall-api.service';
 
@@ -17,9 +17,9 @@ export class CardSelectorComponent {
   @Input() public card! : Card;
   
   // ScryfallAPI data
-  image_url : string = "";
-  promotypes? : string[];
-  finishes? : string[];
+  @Input() public image_url? : string = "";
+  @Input() public promotypes? : string[];
+  @Input() public finishes? : string[];
   
   // Form control fields
   tc = this.fb.array([]);
@@ -36,10 +36,24 @@ export class CardSelectorComponent {
   // Set the values retrieved from the scryfall API locally
   // Then we calculate all fields that are derived from them (i.e. the form control)
   getInformation() {
+    if(this.card.versions[0].image_url !== undefined) 
+      this.image_url=this.card.versions[0].image_url; 
+    if(this.card.versions[0].promotypes !== undefined) 
+      this.promotypes=this.card.versions[0].promotypes;
+    if(this.card.versions[0].possible_finishes !== undefined) 
+      this.finishes=this.card.versions[0].possible_finishes;
+
+    if(this.image_url != undefined && this.finishes != undefined) {
+      this.setupFormControl();
+      return;
+    };
+    
+    console.error("Card not found intially.");
+
     this.scryfallAPIService.getCardInformation(this.card.versions[0].set_code, this.card.versions[0].number).subscribe( res => {
         this.setInformation(res);
         this.setupFormControl();
-    })
+    });
   }
 
   // Set and clean the values retrieved from the ScryfallAPI
@@ -110,7 +124,7 @@ export class CardSelectorComponent {
         continue;
 
       // DEBUG
-      console.log(`Added cards: ${this.card.versions[0].set_code}, ${this.finishes[i]} ${count}`);
+      console.log(`Added cards: ${this.card.versions[0].set_code} ${this.card.versions[0].number}, ${this.finishes[i]} ${count}`);
       
       this.totalSelected += count;
       versions.push(this.generateVersion(this.finishes[i], count));

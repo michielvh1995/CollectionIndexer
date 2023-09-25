@@ -1,10 +1,11 @@
 import { Component, EventEmitter, Input, Output, QueryList, ViewChildren, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
 
 import { Card } from '../../../shared/models/card';
 import { CardSelectorComponent } from '../../card-selector/components/card-selector.component';
-import { ColourSelectComponent } from '../../../shared/colour-select/components/colour-select.component';
+
 import { ScryfallAPIService } from '../../../shared/scryfallAPI/scyfall-api.service';
+import { CardFilterComponent } from '../../../card-filter/card-filter/components/card-filter.component';
+import { CardSelection } from '../../../shared/models/filters';
 
 @Component({
   selector: 'app-select-card-versions',
@@ -14,13 +15,17 @@ import { ScryfallAPIService } from '../../../shared/scryfallAPI/scyfall-api.serv
 export class SelectCardVersionsComponent  {
   constructor(
     private scryfallAPIService: ScryfallAPIService
-    ) { }
+    ) { 
+      console.warn("SelectCardVersionsComponent is deprecated!");
+    }
     
-    queriedCards? : Card[];
-    
+    // Filters
+    @ViewChild(CardFilterComponent) private cardFilter! : CardFilterComponent;
+
     // Used to read data from the card-selectors per card version
     @ViewChildren(CardSelectorComponent) private selectors? : QueryList<CardSelectorComponent>;
-    @ViewChild(ColourSelectComponent) private colourSelector! : ColourSelectComponent;
+    
+    queriedCards? : Card[];
 
     // TODO: make submission reversible on error
     @Input() success = false;
@@ -28,33 +33,15 @@ export class SelectCardVersionsComponent  {
     // Used to notify the parent of card submission
     @Output() addCardsEvent  = new EventEmitter<Card[]>();
 
-    cardSelectorForm = new FormGroup({
-      cardNameControl: new FormControl(''),
-      cardSetControl: new FormControl('')
-    });
-
     submitted = false;
 
     onCardSearch() {
-      // Clean and set the card we're searching for
-      var cardName = this.cardSelectorForm.value.cardNameControl?.trim().toLowerCase();
-      var cardSet = this.cardSelectorForm.value.cardSetControl?.trim().toLowerCase();
-      
+      if(!this.cardFilter.Validate()) return;
 
+      var selection : CardSelection = this.cardFilter.ReadData();
+      console.log(selection.GenerateScryfallQuery());
 
-      // Return on empty query
-      if(!cardName && !cardSet) return;
-
-      var queryString = `${this.colourSelector.GenerateScryfallQuery()}`;
-      console.log(queryString);
-      
-      if(cardName) queryString+=`+name:${cardName}`;
-      console.log(queryString);
-
-      if(cardSet)  queryString+=`+set:${cardSet}`;
-      console.log(queryString);
-
-      this.scryfallAPIService.searchForCards(queryString).subscribe(fetched => {
+      this.scryfallAPIService.searchForCards(selection.GenerateScryfallQuery()).subscribe(fetched => {
         this.queriedCards = fetched;
       });
     }
@@ -84,5 +71,6 @@ export class SelectCardVersionsComponent  {
       // Emit the addCardsEvent to the parent
       this.addCardsEvent.emit(selectedCards);
       this.submitted = true;
+      this.cardFilter.Disable();
     }
 }

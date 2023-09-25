@@ -51,7 +51,25 @@ button:disabled {
   margin-top: 0.4em;
   margin-left: 0.4em;
 
-  // // Activate this to enable sideways scrolling
-  // display: flex;
-  // overflow: scroll;
+  // Activate this to enable sideways scrolling
+  display: flex;
+  overflow: scroll;
+}
+.bottom {
+  height: 50px; 
+  #pages {
+    margin: 0px;
+    margin-right: -4px;
+  }
+  #no-pages {
+    margin: 0px;
+    margin-right: -2px;
+  }
+}
+
+#countdisplay {
+  position: relative;
+  float: right;
+  margin-top: 18px;
+  margin-right: 20px;  
 }

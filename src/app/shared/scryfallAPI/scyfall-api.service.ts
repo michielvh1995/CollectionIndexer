@@ -45,6 +45,7 @@ export class ScryfallAPIService {
             "card_count": 1,
             "set_code" : scryfallData.data[i].set,
             "number" : scryfallData.data[i].collector_number,
+            "image_url" : scryfallData.data[i].image_uris["normal"]
           }]
         } as Card;
         cardsArray.push(card);
@@ -52,6 +53,9 @@ export class ScryfallAPIService {
 
     return cardsArray;
   }
+
+
+  
 
   // Oh dear...
   // De scryfall API heeft veel meer opties dan de MTG.io API.
@@ -64,9 +68,19 @@ export class ScryfallAPIService {
   searchForCards(queryString : string) : Observable<Card[]> {
     return this.http.get<ScryfallAPIModel>(`${this.apiURL}search?unique=prints&q=${queryString}`)
     .pipe(
-      catchError(this.handleError<ScryfallCardListAPIModel>('Search for cards', {"data": [], "object": "error"})),
-      map(res => this.reportScryfallErrorcodes<ScryfallCardListAPIModel>(res, {"data": [], "object": "error"})),
+      catchError(this.handleError<ScryfallCardListAPIModel>('Search for cards', {"data": [], "object": "error", "total_cards" : 0})),
+      map(res => this.reportScryfallErrorcodes<ScryfallCardListAPIModel>(res, {"data": [], "object": "error", "total_cards" : 0})),
       map(res => this.scryfallListToCards(res))
+    );  
+  }
+
+  public new_searchForCards(queryString : string, pageNo : number) : Observable<ScryfallCardListAPIModel> {
+    this.log(`${this.apiURL}search?unique=prints&page=${pageNo}&q=${queryString}`);
+
+    return this.http.get<ScryfallAPIModel>(`${this.apiURL}search?unique=prints&page=${pageNo}&q=${queryString}`)
+    .pipe(
+      catchError(this.handleError<ScryfallCardListAPIModel>('Search for cards', {"data": [], "object": "error", "total_cards" : 0})),
+      map(res => this.reportScryfallErrorcodes<ScryfallCardListAPIModel>(res, {"data": [], "object": "error", "total_cards" : 0}))
     );  
   }
 
@@ -123,7 +137,8 @@ export interface ScryfallCardAPIModel extends ScryfallAPIModel {
   id? : string;
   multiverse_ids? : number[];
   cardmarket_id? : number;
-  image_uris? : { [key:string] : string };
+  image_uris : { [key:string] : string };
+  card_faces: { image_uris: {[key:string] : string} }[];
   promo_types? : string[];
   finishes? : string[]
   name? : string;
@@ -133,8 +148,8 @@ export interface ScryfallCardAPIModel extends ScryfallAPIModel {
 
 
 export interface ScryfallCardListAPIModel extends ScryfallAPIModel {
-  total_cards? : number;
+  total_cards : number;
   has_more? : boolean;
-  next_age? : string;
-  data? : ScryfallCardAPIModel[];
+  next_page? : string;
+  data : ScryfallCardAPIModel[];
 }

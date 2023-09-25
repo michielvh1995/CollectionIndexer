@@ -1,5 +1,5 @@
 <span class="colourSelection"  [formGroup]="colourSelection">
-    <span class="error" *ngIf="!this.validation()">Cards can either be coloured or colourless, not both</span>
+    <span class="error" *ngIf="!this.Validate()">Cards can either be coloured or colourless, not both</span>
     
     <select name="matchtype" id="matchtype" formControlName="matchControl">
         <option value="=">Exactly</option>
