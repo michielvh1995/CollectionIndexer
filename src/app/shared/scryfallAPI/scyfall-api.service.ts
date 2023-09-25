@@ -138,7 +138,7 @@ export interface ScryfallCardAPIModel extends ScryfallAPIModel {
   multiverse_ids? : number[];
   cardmarket_id? : number;
   image_uris : { [key:string] : string };
-  card_faces: { image_uris: {[key:string] : string} }[];
+  card_faces?: { image_uris: {[key:string] : string} }[];
   promo_types? : string[];
   finishes? : string[]
   name? : string;

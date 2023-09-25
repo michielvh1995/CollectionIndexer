@@ -91,10 +91,11 @@ export class CardSearchComponent {
         "possible_finishes" : scryfallCard.finishes
       }]} as Card;
 
-      if(scryfallCard.card_faces)
-        card.versions[0].image_url = scryfallCard.card_faces[0]["image_uris"]["normal"];
-      else if(scryfallCard.image_uris)
+
+      if(scryfallCard.image_uris)
         card.versions[0].image_url = scryfallCard.image_uris["normal"];
+      else if(scryfallCard.card_faces)
+        card.versions[0].image_url = scryfallCard.card_faces[0]["image_uris"]["normal"];
 
       return card;
     }
