@@ -1,0 +1,27 @@
+<span class="colourSelection"  [formGroup]="colourSelection">
+    <span class="error" *ngIf="!this.Validate()">Cards can either be coloured or colourless, not both</span>
+    
+    <select name="matchtype" id="matchtype" formControlName="matchControl">
+        <option value="=">Exactly</option>
+        <option value="<=">Subset of</option>
+        <option value=">=">Has atleast</option>
+    </select>
+
+    <input name='w' value='w' id ="w" type="checkbox" formControlName="wControl">
+    <label id="wl" for="w"></label>
+
+    <input name='u' value='u' id ="u" type="checkbox" formControlName="uControl">
+    <label id="ul" for="u"></label>
+
+    <input name='b' value='b' id ="b" type="checkbox" formControlName="bControl">
+    <label id="bl" for="b"></label>
+
+    <input name='r' value='r' id ="r" type="checkbox" formControlName="rControl">
+    <label id="rl" for="r"></label>
+
+    <input name='g' value='g' id ="g" type="checkbox" formControlName="gControl">
+    <label id="gl" for="g"></label>
+
+    <input name='c' value='c' id ="c" type="checkbox" formControlName="cControl">
+    <label id="cl" for="c"></label>
+</span>

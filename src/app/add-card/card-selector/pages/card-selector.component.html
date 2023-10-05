@@ -1,17 +1,41 @@
-<div class="selector-container">
-
-    <form class="count-form" [formGroup]="finishCounterForm" (ngSubmit)="readData()">   
-        <div formArrayName="cardCounts">
-            <span *ngFor="let finish of finishes; let i=index">
+<div class="selector-container"
+        [ngClass]="{success:Status==='success', 
+        failure:Status==='failure',
+        submitted:Status==='pending'}">
+    <form class="count-form" [formGroup]="finishCounterForm" (ngSubmit)="SubmitCards()">
+        <div formArrayName="cardCounts" class="card-counts">
+            <span class="finish-container" *ngFor="let finish of finishes; let i=index">
                 <label>{{finish | titlecase}}</label>
                 <input type ="number" min="0" [formControlName]="i">
             </span>
+            <button
+                *ngIf="Status!='success' && Status!='failure'"
+                 type="submit"
+                [disabled]="this.Status=='pending'">+</button>
+            <!-- <button *ngIf="Status=='success'" [disabled]="true">✓</button> -->
+            <button *ngIf="Status=='failure'" type="submit">Retry</button>
+        </div>
+
+        <div class="status-window">
+            <div *ngIf="Status=='pending'" class="loader">Loading</div>
+            <div *ngIf="Status=='failure'" class="failure">Failed!</div>
+            <div *ngIf="Status=='success'" class="success">
+                Success!
+                <div class="success-checkmark">
+                    <div class="check-icon">
+                      <span class="icon-line line-tip"></span>
+                      <span class="icon-line line-long"></span>
+                      <div class="icon-circle"></div>
+                      <div class="icon-fix"></div>
+                    </div>
+                  </div>
+            </div>
         </div>
     </form>
     
+    
     <div class="imgcontainer"
         [ngStyle]="{ 'background-image': 'url(' + image_url + ')'}">
-        <!-- <img class="carddisplay" src="{{image_url}}"/> -->
         <div *ngFor="let promotype of promotypes" class="promotypes-container">
             <span>{{promotype | titlecase}}</span>
         </div>

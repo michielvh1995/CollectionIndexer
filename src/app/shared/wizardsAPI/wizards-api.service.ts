@@ -62,6 +62,29 @@ export class WizardsAPIService {
         )
     }
 
+    // What is it called again that you can either say only these exact colours or all that contain them?
+    // Eitherway, the variable colourExclusivity is used to determine that: true for only these colours, and false for all cards with these colour (and others)
+    // Aside from the colour option this function is the exact same as queryCardsByNameSet function.
+    queryCardsByNameSetandColour(name? : string, set?:string, colours?:string[], colourExclusivity : boolean = true) {
+      
+      // Set the separator based on the exlusivity
+      let colourSeparator = ',';
+      if (colourExclusivity = false)
+        colourSeparator = '|';
+
+      // Build the query string. We concat the colousr with the separator between them
+      var querystring = `?name=${name}&set=${set}&colors${colours?.concat(colourSeparator)}`;
+
+      this.log(`${this.apiURL}${querystring}`);
+
+      return this.http.get<any>(`${this.apiURL}${querystring}`)
+        .pipe(
+          catchError(this.handleError("Get multiverseID by name and set", [])),
+          tap(fetched => this.log(`${fetched.cards.length} cards from wizards`)),
+          map(fetched => this.castIntoAPICardObjects(fetched))
+        )
+    }
+
 
     private handleError<T>(operation = 'default operation', result?: T){
       return (error: any): Observable<T> => {

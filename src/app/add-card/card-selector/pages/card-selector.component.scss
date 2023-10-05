@@ -1,40 +1,148 @@
 $cardheight: 370px;
+$cardwidth: 265px;
+
+$basecolour: rgba(81, 81, 81, 0.755);
+$successcolour:  rgba(0,80,0,0.9);
+$failurecolour: rgba(80,0,0,0.9);
+$textcolour:rgb(240, 213, 181);
+
 
 .selector-container {
     display: inline-block;
-    position: right;
+    position: relative;
     padding: 0.1em;
     border-style: solid;
     border-width: 1px;
     border-color: darkgrey;
+
+    width: $cardwidth;
+    height: $cardheight;
+
+    .count-form {
+        display: none;
+        width: 100%;
+        height: 70%;
+        position: absolute;
+        z-index: 10;
+        background-color: $basecolour;
+        text-align: center;
+
+        .card-counts {
+            margin-top: 10%
+        }
+
+
+        .finish-container {
+            font-weight: bold;
+            color: $textcolour;
+            
+            background-color: $basecolour;
+
+            display:inline-block;
+            height: 45px;
+            margin-left: 2px;
+            margin-right: 7px;
+            
+            label {
+                display:table;
+            }
+
+            input {
+                display:table;
+                width: 50px;
+            }
+        }
+        button {
+            display: inline;
+            position: relative;
+            height: 30px;
+            width: 30px;
+            bottom: 3px;
+        }
+        button:disabled {
+            background-color: grey;
+        }
+    }
 }
 
-.count-form {
+
+
+
+.selector-container:hover, .submitted, .success, .failure {
+    .count-form {
+      display: inherit;
+    }
+
+}
+
+.success, .success:hover {
+    pointer-events: none;
+    .count-form{
+        background-color: $successcolour;
+        display: inherit;
+
+        button:disabled {
+            background-color: darkgreen;
+        }
+        .finish-container {
+            background-color: $successcolour;
+        }
+    }
+}
+
+.failure, failure:hover {
+    .count-form{
+        background-color: $failurecolour;
+        display: inherit;
+
+        .finish-container {
+            background-color: $failurecolour;
+        }
+
+        button {
+            width: auto;
+        }
+    }
+}
+
+.status-window {
+    font-weight: 900;
+    font-size: larger;
+    margin-top: 20px;
+
+    .failure {
+        color: red;
+    }
+    .success {
+        color: #4CAF50;
+    }
+}
+
+.loader {
     margin: auto;
-    width: 90%;
-    position: relative;
-
-    label {
-        margin-right: 2px;
-        margin-left: 7px;
-    }
-
-    input {
-        width: 50px;
-    }
-
-
+    border: 5px solid #EAF0F6;
+    border-radius: 50%;
+    border-top: 5px solid #FF7A59;
+    width: 80px;
+    height: 80px;
+    animation: spinner 2s linear infinite;
 }
 
+@keyframes spinner {
+
+0% { transform: rotate(360deg); }  
+100% { transform: rotate(0deg); }
+}
 
 
 
 
 .imgcontainer {
-    width: 265px;
+    width: $cardwidth;
     height: $cardheight;
     
-    background-size:contain;
+    position: absolute;
+    background-size: contain;
     
     .promotypes-container {
         background-color: rgba(100,0,0, 1);
@@ -53,8 +161,5 @@ $cardheight: 370px;
         margin: 0 auto;
         margin-top: 1px;
         top: $cardheight - 100px;
-
     }
-
-
 }

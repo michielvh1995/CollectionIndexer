@@ -7,6 +7,18 @@
     /* background-color: red; */
 }
 
+.selector-form {
+  label {
+    margin-left: 0.4em;
+  }
+
+  #card-count {
+    width: 2em;
+    margin-right: 5%;
+  }
+}
+
+
 label {
   color: #435960;
   font-weight: bold;
@@ -33,7 +45,31 @@ button:disabled {
   cursor: auto;
 }
 
+
+
 .card-version-selection {
   margin-top: 0.4em;
   margin-left: 0.4em;
+
+  // Activate this to enable sideways scrolling
+  display: flex;
+  overflow: scroll;
+}
+.bottom {
+  height: 50px; 
+  #pages {
+    margin: 0px;
+    margin-right: -4px;
+  }
+  #no-pages {
+    margin: 0px;
+    margin-right: -2px;
+  }
+}
+
+#countdisplay {
+  position: relative;
+  float: right;
+  margin-top: 18px;
+  margin-right: 20px;  
 }

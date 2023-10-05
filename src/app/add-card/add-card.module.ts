@@ -4,9 +4,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AddCardPageComponent } from './add-card-page/components/add-card-page.component';
 import { CardSelectorComponent } from './card-selector/components/card-selector.component';
-import { SelectCardVersionsComponent } from './select-card-versions/components/select-card-versions.component';
 
 import { SharedModule } from '../shared/shared.module';
+import { CardFilterModule } from '../card-filter/card-filter.module';
+import { CardSearchComponent } from './card-search/components/card-search.component';
 
 
 
@@ -14,13 +15,14 @@ import { SharedModule } from '../shared/shared.module';
   declarations: [
     AddCardPageComponent,
     CardSelectorComponent,
-    SelectCardVersionsComponent
+    CardSearchComponent
   ],
   imports: [
     CommonModule,
     SharedModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CardFilterModule
   ],
   exports:
   [

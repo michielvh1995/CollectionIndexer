@@ -1,0 +1,11 @@
+<span class="selector-form" [formGroup]="cardSelectorForm">    
+    <input id="card-name" placeholder="Name" type ="text" formControlName="cardNameControl">
+    <span class="vertical">
+        <label for="card-strict-name">Strict</label>
+        <input id="card-strict-name" type ="checkbox" formControlName="cardStrictNameControl">
+    </span>
+    <span>
+        <input id="card-set" placeholder="Set" type ="text" formControlName="cardSetControl">
+    </span>
+    <app-colour-filter></app-colour-filter>
+</span>

@@ -16,7 +16,15 @@ export interface CardVersion {
     // This is information regarding the cards themselves
     location? : string;
 
+    // TODO: Replace foil with the finish
     foil? : boolean;
+    finish? : string;
+    
+
+    // Extra annotation
+    image_url? : string;
+    promotypes? : string[];
+    possible_finishes? : string[];
 }
 
 export interface CardsAPIModel {

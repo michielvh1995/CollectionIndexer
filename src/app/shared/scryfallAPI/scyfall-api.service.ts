@@ -3,13 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, map, of, tap } from 'rxjs';
 
 import { MessageService } from '../messages/services/messages.service';
+import { Card } from '../models/card';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ScryfallAPIService {
-
   constructor(
     private http: HttpClient,
     private messageService: MessageService) { }
@@ -28,6 +28,62 @@ export class ScryfallAPIService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
+  private scryfallListToCards(scryfallData:ScryfallCardListAPIModel) : Card[] {
+    // id? : string;
+    // multiverse_ids? : number[];
+    // cardmarket_id? : number;
+    // image_uris? : { [key:string] : string };
+    // promo_types? : string[];
+    // finishes? : string[]
+    var cardsArray : Card[] = [];
+    if(!scryfallData.data) return [];
+
+    for (let i = 0; i < scryfallData.data.length; i++) {
+        var card = {
+          "name" : scryfallData.data[i].name,
+          "versions" : [{
+            "card_count": 1,
+            "set_code" : scryfallData.data[i].set,
+            "number" : scryfallData.data[i].collector_number,
+            "image_url" : scryfallData.data[i].image_uris["normal"]
+          }]
+        } as Card;
+        cardsArray.push(card);
+    }
+
+    return cardsArray;
+  }
+
+
+  
+
+  // Oh dear...
+  // De scryfall API heeft veel meer opties dan de MTG.io API.
+  // Als gevolg kunnen we veel meer zoektermen toevoegen
+  // Supported options:
+  // * colors: wubrg/c/m
+  // * name
+  // * set
+  // * type: land, creature, artifact, etc.
+  searchForCards(queryString : string) : Observable<Card[]> {
+    return this.http.get<ScryfallAPIModel>(`${this.apiURL}search?unique=prints&q=${queryString}`)
+    .pipe(
+      catchError(this.handleError<ScryfallCardListAPIModel>('Search for cards', {"data": [], "object": "error", "total_cards" : 0})),
+      map(res => this.reportScryfallErrorcodes<ScryfallCardListAPIModel>(res, {"data": [], "object": "error", "total_cards" : 0})),
+      map(res => this.scryfallListToCards(res))
+    );  
+  }
+
+  public new_searchForCards(queryString : string, pageNo : number) : Observable<ScryfallCardListAPIModel> {
+    this.log(`${this.apiURL}search?unique=prints&page=${pageNo}&q=${queryString}`);
+
+    return this.http.get<ScryfallAPIModel>(`${this.apiURL}search?unique=prints&page=${pageNo}&q=${queryString}`)
+    .pipe(
+      catchError(this.handleError<ScryfallCardListAPIModel>('Search for cards', {"data": [], "object": "error", "total_cards" : 0})),
+      map(res => this.reportScryfallErrorcodes<ScryfallCardListAPIModel>(res, {"data": [], "object": "error", "total_cards" : 0}))
+    );  
+  }
+
   // Just get all the information we need from the Scryfall API.
   // This incldues the iamge and the promotypes array.
   // Later we can send this information to a buffer or to the collecteDB API
@@ -37,22 +93,24 @@ export class ScryfallAPIService {
     return this.http.get<ScryfallCardAPIModel>(`${this.apiURL}${set_code}/${number}`)
     .pipe(
       catchError(this.handleError<ScryfallCardAPIModel>('getCardInfo')),
-      map(res => this.reportScryfallErrorcodes(res))
+      tap(res => this.reportScryfallErrorcodes(res))
     );  
   }
 
-  // We don't have to do extensive error checking for empty return values as we have to check if the fields are present later anyway 
-  private reportScryfallErrorcodes(apiResponse : ScryfallCardAPIModel) : ScryfallCardAPIModel {
-    if(apiResponse.object == "error")
+  // Do basic error checking and reporting. 
+  // If the object is an error, return a basic response with minimal values
+  private reportScryfallErrorcodes<T>(apiResponse : ScryfallAPIModel, result? : T) : T {
+    if(apiResponse.object == "error") {
       this.log(`Failed to get cards: ${apiResponse.code}, ${apiResponse.details}`);
-    
-    return apiResponse;
+      return result as T;
+    }
+    return apiResponse as T;
   }
 
   private handleError<T>(operation = 'default operation', result?: T){
     return (error: any): Observable<T> => {
-
       // TODO: send the error to remote logging infrastructure
+      console.log("Failed to get cards: ");
       console.error(error); // log to console instead
   
       // TODO: better job of transforming error for user consumption
@@ -65,20 +123,33 @@ export class ScryfallAPIService {
 
 }
 
-
-export interface ScryfallCardAPIModel {
+interface ScryfallAPIModel {
   object : string;
 
   // Error response:
   code? : string;
   status? : number;
   details? : string;
+}
 
-  // Success response:
+
+export interface ScryfallCardAPIModel extends ScryfallAPIModel {
   id? : string;
   multiverse_ids? : number[];
   cardmarket_id? : number;
-  image_uris? : { [key:string] : string };
+  image_uris : { [key:string] : string };
+  card_faces?: { image_uris: {[key:string] : string} }[];
   promo_types? : string[];
   finishes? : string[]
+  name? : string;
+  set?: string;
+  collector_number?: string;
+}
+
+
+export interface ScryfallCardListAPIModel extends ScryfallAPIModel {
+  total_cards : number;
+  has_more? : boolean;
+  next_page? : string;
+  data : ScryfallCardAPIModel[];
 }
