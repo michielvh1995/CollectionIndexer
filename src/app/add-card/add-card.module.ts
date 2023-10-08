@@ -8,6 +8,7 @@ import { CardSelectorComponent } from './card-selector/components/card-selector.
 import { SharedModule } from '../shared/shared.module';
 import { CardFilterModule } from '../card-filter/card-filter.module';
 import { CardSearchComponent } from './card-search/components/card-search.component';
+import { CardDisplayModule } from '../card-display/card-display.module';
 
 
 
@@ -22,7 +23,8 @@ import { CardSearchComponent } from './card-search/components/card-search.compon
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    CardFilterModule
+    CardFilterModule,
+    CardDisplayModule
   ],
   exports:
   [
