@@ -80,7 +80,7 @@ export class CardSearchComponent {
 
 
     _scryfallCardToCard(scryfallCard : ScryfallCardAPIModel) : Card {
-      console.log(`${scryfallCard.set}:${scryfallCard.collector_number}`);
+      // console.log(`${scryfallCard.set}:${scryfallCard.collector_number}`);
       var card = {"name" : scryfallCard.name,
       "versions" : [{
         "card_count": 1,

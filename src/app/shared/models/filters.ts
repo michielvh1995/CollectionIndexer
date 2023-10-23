@@ -12,6 +12,7 @@ export class CardSelection {
         rarityFilter? : RaritySelection,
         page? : number) {
       this.Colours = colourFilter;
+      this.Rarities = rarityFilter;
       this.Name = name;
       this.Setname = set;
       this.PageNo = page;
@@ -36,6 +37,12 @@ export class CardSelection {
       return query;
     }
   }
+
+
+abstract class Selection {
+  public abstract Validate() : boolean;
+  public abstract ToScryfallQuery() : string;
+}
 
 export class ColourSelection {
   public W : boolean;
@@ -111,14 +118,23 @@ export class ColourSelection {
 export class RaritySelection {
   
   public Rarities? : string[];
-  public RarityComparator : string;
 
-  constructor(
-    rarities? : string[],
-    rarityComparator? : string) {
+  constructor(rarities? : string[]) {
+      this.Rarities = rarities;
+    }
+
+    public Validate() : boolean {
+      if(this.Rarities != undefined)
+        return true;
+      else
+        return false;
     }
 
     public ToScryfallQuery() : string {
-      return '';
+      if(!this.Validate() || this.Rarities?.length == 0) return "";
+      var query = "";
+      query = `(r:${this.Rarities?.join('+or+r:')})`
+      
+      return query;
     }
 }

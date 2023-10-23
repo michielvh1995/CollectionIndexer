@@ -6,82 +6,82 @@
     margin-top: -3px;
   }
   
-  .colourSelection {
-    margin-left: 10px;
-    margin-right: 10px;
-  
-    top: 10px;
-  
-    height: 32px;
-    position: relative;
-    display:inline-block;
-  
-    label {
-      border-radius: 16px;
-      margin-left:4px;
-      margin-right:4px;
-      height: 28px;
-      width: 28px;
-    }
-  
-    input[type=checkbox] {
-      display: none;
-    }
-  
-    input[type=checkbox] + label {
-      background-size: cover;
-      display:inline-block;
-      padding: 0 0 0 0px;
-    }
-  
-    input[type=checkbox]:checked + label {
-      box-shadow: 0 0 0 3px black;
-    }
+.colourSelection {
+  margin-left: 10px;
+  margin-right: 10px;
 
-    select {
-      font-size: 1em;
-      padding: .2rem;
-      bottom: 0.5rem;
-      display: inline-block;
-      position: relative;
-    }
-  
-    #wl {
-      background-image:url("../../../../assets/img/whiteicon.svg");
-    }
-    #ul {
-      background-image:url("../../../../assets/img/blueicon.svg");
-    }
-    #bl {
-      background-image:url("../../../../assets/img/blackicon.svg");
-    }
-    #rl {
-      background-image:url("../../../../assets/img/redicon.svg");
-    }  #gl {
-      background-image:url("../../../../assets/img/greenicon.svg");
-    }
-    #cl {
-      background-image:url("../../../../assets/img/colourlessicon.svg");
-    }
-  
-    #w:checked + label{
-      // box-shadow: 0 0 0 4px rgba(248, 231, 185,0.6);
-      box-shadow: 0 0 0 3px black;
-    }
-    #u:checked + label{
-      box-shadow: 0 0 0 4px rgba(14, 104, 171,0.6);
-    }
-    #b:checked + label{
-      box-shadow: 0 0 0 4px rgba(21,11,0,0.6);
-    }
-    #r:checked + label{
-      box-shadow: 0 0 0 4px rgba(211, 32, 42,0.6);
-    }
-    #g:checked + label{
-      box-shadow: 0 0 0 4px rgba(0, 115, 62,0.6);
-    }
-    #c:checked + label{
-      box-shadow: 0 0 0 4px rgba(0, 0, 0,0.6);
-    }
+  top: 10px;
+
+  height: 32px;
+  position: relative;
+  display:inline-block;
+
+  label {
+    border-radius: 16px;
+    margin-left:4px;
+    margin-right:4px;
+    height: 28px;
+    width: 28px;
   }
+
+  input[type=checkbox] {
+    display: none;
+  }
+
+  input[type=checkbox] + label {
+    background-size: cover;
+    display:inline-block;
+    padding: 0 0 0 0px;
+  }
+
+  input[type=checkbox]:checked + label {
+    box-shadow: 0 0 0 3px black;
+  }
+
+  select {
+    font-size: 1em;
+    padding: .2rem;
+    bottom: 0.5rem;
+    display: inline-block;
+    position: relative;
+  }
+
+  #wl {
+    background-image:url("../../../../assets/img/whiteicon.svg");
+  }
+  #ul {
+    background-image:url("../../../../assets/img/blueicon.svg");
+  }
+  #bl {
+    background-image:url("../../../../assets/img/blackicon.svg");
+  }
+  #rl {
+    background-image:url("../../../../assets/img/redicon.svg");
+  }  #gl {
+    background-image:url("../../../../assets/img/greenicon.svg");
+  }
+  #cl {
+    background-image:url("../../../../assets/img/colourlessicon.svg");
+  }
+
+  #w:checked + label{
+    // box-shadow: 0 0 0 4px rgba(248, 231, 185,0.6);
+    box-shadow: 0 0 0 3px black;
+  }
+  #u:checked + label{
+    box-shadow: 0 0 0 4px rgba(14, 104, 171,0.6);
+  }
+  #b:checked + label{
+    box-shadow: 0 0 0 4px rgba(21,11,0,0.6);
+  }
+  #r:checked + label{
+    box-shadow: 0 0 0 4px rgba(211, 32, 42,0.6);
+  }
+  #g:checked + label{
+    box-shadow: 0 0 0 4px rgba(0, 115, 62,0.6);
+  }
+  #c:checked + label{
+    box-shadow: 0 0 0 4px rgba(0, 0, 0,0.6);
+  }
+}
 

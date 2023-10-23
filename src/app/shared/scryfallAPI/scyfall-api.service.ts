@@ -75,7 +75,7 @@ export class ScryfallAPIService {
   }
 
   public new_searchForCards(queryString : string, pageNo : number) : Observable<ScryfallCardListAPIModel> {
-    this.log(`${this.apiURL}search?unique=prints&page=${pageNo}&q=${queryString}`);
+    this.log(`${this.apiURL}search?unique=prints&order=name&page=${pageNo}&q=${queryString}`);
 
     return this.http.get<ScryfallAPIModel>(`${this.apiURL}search?unique=prints&page=${pageNo}&q=${queryString}`)
     .pipe(

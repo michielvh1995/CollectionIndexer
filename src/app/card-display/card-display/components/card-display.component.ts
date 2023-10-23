@@ -23,7 +23,7 @@ export class CardDisplayComponent {
    // Set the values retrieved from the scryfall API locally
    // Then we calculate all fields that are derived from them (i.e. the form control)
    setInformation() {
-    console.log("Before");
+    // console.log("Before");
     
      if(this.card.versions[0].image_url !== undefined) 
        this.image_url=this.card.versions[0].image_url;
@@ -31,7 +31,7 @@ export class CardDisplayComponent {
        console.error(`No image found for ${this.card.name}!`);
        return;
      }
-     console.log("Image set");
+    //  console.log("Image set");
 
      if(this.card.versions[0].possible_finishes !== undefined) 
        this.finishes=this.card.versions[0].possible_finishes;
@@ -40,7 +40,7 @@ export class CardDisplayComponent {
        return;
      }
  
-     console.log("Finishes set");
+    //  console.log("Finishes set");
 
      if(this.card.versions[0].promotypes !== undefined) 
        this.promotypes = this.card.versions[0].promotypes;
