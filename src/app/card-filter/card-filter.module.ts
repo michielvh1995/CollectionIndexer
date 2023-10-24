@@ -4,12 +4,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { CardFilterComponent } from './card-filter/components/card-filter.component';
 import { ColourFilterComponent } from './colour-filter/components/colour-filter.component';
+import { RarityFilterComponent } from './rarity-filter/components/rarity-filter.component';
 
 
 @NgModule({
   declarations: [
     CardFilterComponent,
-    ColourFilterComponent
+    ColourFilterComponent,
+    RarityFilterComponent
   ],
   imports: [
     CommonModule,

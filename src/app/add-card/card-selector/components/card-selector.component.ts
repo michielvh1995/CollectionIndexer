@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Card, CardVersion } from '../../../shared/models/card';
 import { CollecteDBService } from '../../../shared/collecteDB/collecte-db.service';
+import { CardDisplayComponent } from '../../../card-display/card-display/components/card-display.component';
 
 @Component({
   selector: 'app-card-selector',
@@ -21,13 +22,9 @@ export class CardSelectorComponent {
     // Call the scryfall API for information
     this.setInformation();
   }
-  
   // Input field to determine what card we are displaying. All other information is derived from this
   @Input() public card! : Card;
   
-  // ScryfallAPI data
-  @Input() public image_url? : string = "";
-  @Input() public promotypes? : string[];
   @Input() public finishes? : string[];
   
   // Form control fields
@@ -50,12 +47,6 @@ export class CardSelectorComponent {
   // Set the values retrieved from the scryfall API locally
   // Then we calculate all fields that are derived from them (i.e. the form control)
   setInformation() {
-    if(this.card.versions[0].image_url !== undefined) 
-      this.image_url=this.card.versions[0].image_url;
-    else {
-      console.error(`No image found for ${this.card.name}!`);
-      return;
-    }
     if(this.card.versions[0].possible_finishes !== undefined) 
       this.finishes=this.card.versions[0].possible_finishes;
     else {
@@ -63,9 +54,6 @@ export class CardSelectorComponent {
       return;
     }
 
-    if(this.card.versions[0].promotypes !== undefined) 
-      this.promotypes = this.card.versions[0].promotypes;
-    
     if(this.card.versions[0].possible_finishes !== undefined) 
       this.finishes=this.card.versions[0].possible_finishes;
       
@@ -137,6 +125,9 @@ export class CardSelectorComponent {
   // Here we can use the card.versions[0] for the values of the multiverseID etc,
   // because input is a single card with a version. We use that CardVersion for the scryfall API aswell
   private generateVersion(finish : string, count : number) : CardVersion {
+    // DEBUG:
+    console.log(`${this.card.name} (${finish}): ${count}`);
+
     return {
       "card_count" : count,
       "multiverseID" : this.card.versions[0].multiverseID,
@@ -144,7 +135,7 @@ export class CardSelectorComponent {
       "number" : this.card.versions[0].number,
       
       // TEMPORARY: Remove this with the updated card model
-      "foil" : (finish !== "non foil"),
+      "foil" : (finish !== "nonfoil"),
       // "finish" : finish
     } 
   }
