@@ -1,3 +1,8 @@
+abstract class Selection {
+  public abstract Validate() : boolean;
+  public abstract ToScryfallQuery() : string;
+}
+
 export class CardSelection {
     public Colours? : ColourSelection;
     public Rarities? : RaritySelection;
@@ -38,13 +43,7 @@ export class CardSelection {
     }
   }
 
-
-abstract class Selection {
-  public abstract Validate() : boolean;
-  public abstract ToScryfallQuery() : string;
-}
-
-export class ColourSelection {
+export class ColourSelection extends Selection {
   public W : boolean;
   public U : boolean;
   public B : boolean;
@@ -58,6 +57,8 @@ export class ColourSelection {
       r: boolean = false, g: boolean = false, c: boolean = false,
       matchType: string = '='
       ) {
+    super();
+
     this.W = w;
     this.U = u;
     this.B = b;
@@ -115,26 +116,27 @@ export class ColourSelection {
   }
 }
 
-export class RaritySelection {
-  
+export class RaritySelection extends Selection {
   public Rarities? : string[];
 
   constructor(rarities? : string[]) {
-      this.Rarities = rarities;
-    }
+    super();
 
-    public Validate() : boolean {
-      if(this.Rarities != undefined)
-        return true;
-      else
-        return false;
-    }
+    this.Rarities = rarities;
+  }
 
-    public ToScryfallQuery() : string {
-      if(!this.Validate() || this.Rarities?.length == 0) return "";
-      var query = "";
-      query = `(r:${this.Rarities?.join('+or+r:')})`
-      
-      return query;
-    }
+  public Validate() : boolean {
+    if(this.Rarities != undefined)
+      return true;
+    else
+      return false;
+  }
+
+  public ToScryfallQuery() : string {
+    if(!this.Validate() || this.Rarities?.length == 0) return "";
+    var query = "";
+    query = `(r:${this.Rarities?.join('+or+r:')})`
+    
+    return query;
+  }
 }
