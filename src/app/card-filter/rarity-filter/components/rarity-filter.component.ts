@@ -5,7 +5,9 @@ import { RaritySelection } from '../../../shared/models/filters';
 @Component({
   selector: 'app-rarity-filter',
   templateUrl: '../pages/rarity-filter.component.html',
-  styleUrls: ['../pages/rarity-filter.component.scss']
+  styleUrls: [
+      '../pages/rarity-filter.component.scss'
+    ]
 })
 export class RarityFilterComponent {
   constructor () {}
