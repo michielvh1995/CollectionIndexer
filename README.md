@@ -44,6 +44,7 @@ This module provides a filter to filter cards with.
 The main filter component is the `card-filter` component. This filter can then be extended with the other filters in the component. These are:
 * `colour-filter`
 * `rarity-filter`
+* *TODO*: `set-filter`
 
 *TODO:* Each filter is an extension of the `base-filter` class, which provides logic for the following functions:
 * `Enable() : void`: Enables the component
