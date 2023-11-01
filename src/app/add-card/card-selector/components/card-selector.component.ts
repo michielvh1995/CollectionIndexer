@@ -39,7 +39,7 @@ export class CardSelectorComponent {
   
   // Status options are:
   // success -> Done
-  // pending -> submitted, but not accepted of failed
+  // pending -> submitted, but not accepted or failed
   // failure -> submitted, but failed
   public Status : string = "none";
 
