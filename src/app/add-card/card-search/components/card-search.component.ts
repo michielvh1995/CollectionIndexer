@@ -18,9 +18,6 @@ export class CardSearchComponent {
     // Filters
     @ViewChild(CardFilterComponent) private cardFilter! : CardFilterComponent;
 
-    // Used to read data from the card-selectors per card version
-    @ViewChildren(CardSelectorComponent) private selectors? : QueryList<CardSelectorComponent>;
-    
     // Here we have the data from the Scryfall API:
     public HasPrevious : boolean = false;
     public HasMore : boolean = false;
@@ -91,11 +88,18 @@ export class CardSearchComponent {
         "possible_finishes" : scryfallCard.finishes
       }]} as Card;
 
-
+      // currently this is the best check to see if a card is dual-faced...
+      // There are "double" cards on front-faces (i.e. adventures or dusk // dawn etc).
+      // but these all have image_uris in the first layer of their JSON.
+      // The dual faced ones do not have this
       if(scryfallCard.image_uris)
         card.versions[0].image_url = scryfallCard.image_uris["normal"];
-      else if(scryfallCard.card_faces)
+      else if(scryfallCard.card_faces) {
+        card.dual_face = true;
         card.versions[0].image_url = scryfallCard.card_faces[0]["image_uris"]["normal"];
+        card.versions[0].backside_image = scryfallCard.card_faces[1]["image_uris"]["normal"];
+      }
+        
 
       return card;
     }

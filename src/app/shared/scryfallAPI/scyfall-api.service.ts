@@ -85,7 +85,7 @@ export class ScryfallAPIService {
   }
 
   // Just get all the information we need from the Scryfall API.
-  // This incldues the iamge and the promotypes array.
+  // This incldues the image and the promotypes array.
   // Later we can send this information to a buffer or to the collecteDB API
   getCardInformation(set_code? : string, number? : string) : Observable<ScryfallCardAPIModel> {
     this.log(`Seached for ${set_code}/${number}`);

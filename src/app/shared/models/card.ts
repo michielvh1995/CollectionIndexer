@@ -1,6 +1,7 @@
 export interface Card {
     internal_id?: number;
     name: string;
+    dual_face: boolean;
 
     versions : CardVersion[];
 }
@@ -20,9 +21,9 @@ export interface CardVersion {
     foil? : boolean;
     finish? : string;
     
-
     // Extra annotation
     image_url? : string;
+    backside_image? : string;
     promotypes? : string[];
     possible_finishes? : string[];
 }
