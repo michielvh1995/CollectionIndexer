@@ -2,8 +2,6 @@ $cardheight: 370px;
 $cardwidth: 265px;
 
 .imgcontainer {
-    background-color: red;
-
     width: $cardwidth;
     height: $cardheight;
     
@@ -22,8 +20,7 @@ $cardwidth: 265px;
         position: absolute;
         margin: 0 auto;
         bottom: 25px;
-        left: $cardwidth/2 - 25px;       
-        
+        left: calc($cardwidth/2) - 25px;   
     }
     
     .promotypes-container {

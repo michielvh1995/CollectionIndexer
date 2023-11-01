@@ -3,7 +3,7 @@
     <div *ngFor="let promotype of promotypes" class="promotypes-container">
         <span>{{promotype | titlecase}}</span>
     </div>
-    <div class="flip">
+    <button *ngIf="dual_face" class="flip" (click)="flipImage()" >
         
-    </div>
+    </button>
 </div>
