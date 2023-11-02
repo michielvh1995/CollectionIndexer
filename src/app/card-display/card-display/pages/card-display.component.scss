@@ -20,7 +20,8 @@ $cardwidth: 265px;
         position: absolute;
         margin: 0 auto;
         bottom: 25px;
-        left: calc($cardwidth/2) - 25px;   
+        left: calc($cardwidth/2) - 25px;
+        cursor: pointer;
     }
     
     .promotypes-container {

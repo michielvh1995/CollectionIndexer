@@ -17,8 +17,8 @@ export class CardDisplayComponent {
   @Input() public card! : Card;
   
    // ScryfallAPI data
-  @Input() public image_url? : string = "";
-  @Input() public promotypes? : string[];
+  public image_url? : string = "";
+  public promotypes? : string[];
 
   public dual_face : boolean = false;
   private backside : boolean = false;
