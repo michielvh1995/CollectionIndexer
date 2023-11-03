@@ -3,9 +3,11 @@ abstract class Selection {
   public abstract ToScryfallQuery() : string;
 }
 
-export class CardSelection {
+export class CardSelection extends Selection {
     public Colours? : ColourSelection;
     public Rarities? : RaritySelection;
+    
+
     public Name? : string;
     public StrictName : boolean = false;
     public Setname? : string;
@@ -15,7 +17,10 @@ export class CardSelection {
         boolean, set? : string,
         colourFilter? : ColourSelection,
         rarityFilter? : RaritySelection,
-        page? : number) {
+        page? : number) 
+    {
+      super();
+
       this.Colours = colourFilter;
       this.Rarities = rarityFilter;
       this.Name = name;
@@ -25,9 +30,16 @@ export class CardSelection {
       if(strictName != undefined)
         this.StrictName = strictName;
     }
+
+    public Validate() : boolean {
+      var valid : boolean = true;
+      if(this.Colours) if(!this.Colours.Validate()) valid = false;
+      if(this.Rarities) if(!this.Rarities.Validate()) valid = false;
+      return valid;
+    }
     
     // TODO: Move this to the Scryfall API?
-    public GenerateScryfallQuery() : string {
+    public ToScryfallQuery() : string {
       var query: string = "";
       
       if(this.Name)

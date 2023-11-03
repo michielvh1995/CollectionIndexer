@@ -30,7 +30,7 @@ export class CardSearchComponent {
       if(!this.cardFilter.Validate()) return;
 
       // Console logging
-      console.log(this.cardFilter.ReadData().GenerateScryfallQuery());
+      console.log(this.cardFilter.ReadData().ToScryfallQuery());
       
       // Reset these when pressing the search button
       this.HasMore = false;
@@ -42,7 +42,7 @@ export class CardSearchComponent {
     }
 
     private queryCards() {
-      this.scryfallAPIService.new_searchForCards(this.cardFilter.ReadData().GenerateScryfallQuery(), this.pageNo).subscribe(fetched => {
+      this.scryfallAPIService.new_searchForCards(this.cardFilter.ReadData().ToScryfallQuery(), this.pageNo).subscribe(fetched => {
         if(fetched.has_more) this.HasMore = true; // I love the way this boolean evaluates here
         else this.HasMore = false;
         
