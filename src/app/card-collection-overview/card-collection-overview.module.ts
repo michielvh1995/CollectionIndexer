@@ -1,15 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CardCollectionOverviewComponent } from './card-collection-overview/components/card-collection-overview.component';
 import { CommonModule } from '@angular/common';
+import { SpellBookComponent } from './spell-book/components/spell-book.component';
+import { CardFilterModule } from '../card-filter/card-filter.module';
 
 
 
 @NgModule({
   declarations: [
-    CardCollectionOverviewComponent
+    CardCollectionOverviewComponent,
+    SpellBookComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    CardFilterModule
   ]
 })
 export class CardCollectionOverviewModule { }

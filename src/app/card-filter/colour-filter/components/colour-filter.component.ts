@@ -7,6 +7,7 @@ import { CardSelection, ColourSelection } from '../../../shared/models/filters';
   templateUrl: '../pages/colour-filter.component.html',
   styleUrls: ['../pages/colour-filter.component.scss']
 })
+
 export class ColourFilterComponent {
   constructor() {
   }

@@ -20,6 +20,8 @@ export class CardFilterComponent {
   });
 
   public Disable() : void {
+    console.log("DISABLED");
+    
     this.cardSelectorForm.disable();
     this.colourSelector.Disable();
     this.raritySelector.Disable();

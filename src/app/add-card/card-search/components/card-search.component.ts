@@ -1,9 +1,7 @@
-import { Component, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ScryfallAPIService, ScryfallCardAPIModel, ScryfallCardListAPIModel } from '../../../shared/scryfallAPI/scyfall-api.service';
 import { CardFilterComponent } from '../../../card-filter/card-filter/components/card-filter.component';
-import { CardSelectorComponent } from '../../card-selector/components/card-selector.component';
 import { Card } from '../../../shared/models/card';
-import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-card-search',
