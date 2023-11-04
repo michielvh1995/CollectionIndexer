@@ -1,12 +1,12 @@
-abstract class Selection {
+export abstract class BaseSelection {
   public abstract Validate() : boolean;
   public abstract ToScryfallQuery() : string;
 }
 
-export class CardSelection extends Selection {
+export class CardSelection extends BaseSelection {
     public Colours? : ColourSelection;
     public Rarities? : RaritySelection;
-    
+
 
     public Name? : string;
     public StrictName : boolean = false;
@@ -55,7 +55,7 @@ export class CardSelection extends Selection {
     }
   }
 
-export class ColourSelection extends Selection {
+export class ColourSelection extends BaseSelection {
   public W : boolean;
   public U : boolean;
   public B : boolean;
@@ -128,7 +128,7 @@ export class ColourSelection extends Selection {
   }
 }
 
-export class RaritySelection extends Selection {
+export class RaritySelection extends BaseSelection {
   public Rarities? : string[];
 
   constructor(rarities? : string[]) {

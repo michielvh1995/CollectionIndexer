@@ -4,9 +4,10 @@
         <label for="card-strict-name">Strict</label>
         <input id="card-strict-name" type ="checkbox" formControlName="cardStrictNameControl">
     </span>
-    <span>
+    <span *ngIf="enableSet">
         <input id="card-set" placeholder="Set" type ="text" formControlName="cardSetControl">
     </span>
+
     <app-colour-filter></app-colour-filter>
     <app-rarity-filter></app-rarity-filter>
 </span>

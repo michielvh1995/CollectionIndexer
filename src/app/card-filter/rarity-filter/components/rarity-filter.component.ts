@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { RaritySelection } from '../../../shared/models/filters';
+import { BaseFilterComponent } from '../../base-filter/base-filter.component';
 
 @Component({
   selector: 'app-rarity-filter',
@@ -9,9 +10,7 @@ import { RaritySelection } from '../../../shared/models/filters';
       '../pages/rarity-filter.component.scss'
     ]
 })
-export class RarityFilterComponent {
-  constructor () {}
-
+export class RarityFilterComponent extends BaseFilterComponent{
   raritySelection = new FormGroup ({
     cControl: new FormControl(false),
     uControl: new FormControl(false),

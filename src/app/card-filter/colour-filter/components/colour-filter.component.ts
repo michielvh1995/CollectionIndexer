@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { CardSelection, ColourSelection } from '../../../shared/models/filters';
+import { BaseFilterComponent } from '../../base-filter/base-filter.component';
 
 @Component({
   selector: 'app-colour-filter',
@@ -8,9 +9,7 @@ import { CardSelection, ColourSelection } from '../../../shared/models/filters';
   styleUrls: ['../pages/colour-filter.component.scss']
 })
 
-export class ColourFilterComponent {
-  constructor() {
-  }
+export class ColourFilterComponent extends BaseFilterComponent {
   colourSelection = new FormGroup({
     wControl: new FormControl(false),
     uControl: new FormControl(false),
