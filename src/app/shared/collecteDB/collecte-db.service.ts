@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, catchError, map, of, tap } from 'rxjs';
 
 import { MessageService } from '../messages/services/messages.service';
 import { Card } from '../models/card';
+import { CardSelection } from '../models/filters';
 
 interface CardsAPIModel {
   Cards: Card[];
@@ -39,7 +40,35 @@ export class CollecteDBService  {
           tap(fetched => this.log(`Fetched ${fetched.length} cards`)) // Log success
         );
     }
-  
+
+    queryCards(filters: CardSelection) : Observable<Card[]> {
+      
+      var queries : string[] = []
+      if(filters.Name)
+        queries.push(`name=${filters.Name}`);
+      if(filters.Setname)
+        queries.push(`set=${filters.Setname}`);
+      if(filters.Number)
+        queries.push(`number=${filters.Number}`);
+
+      // Parameterize the colourfilter
+      if(filters.Colours && filters.Colours.Validate()) {
+        queries.push(`colours=${filters.Colours.ToList().join()}`);
+        queries.push(`cmt=${filters.Colours.MatchType}`);
+      }
+
+      var queryString = `?${queries.join("&")}`;
+      this.log(`Querying: ${this.apiURL}cards${queryString}`);
+
+      // And then we query the server, with the query string
+      return this.http.get<CardsAPIModel>(`${this.apiURL}cards${queryString}`, this.httpOptions)
+      .pipe(
+        catchError(this.handleError<CardsAPIModel>('Get cards by internal ID', {"Cards":[]})),
+        map(fetched => fetched.Cards),  // Extract the fetched cards
+        tap(fetched => this.log(`Fetched ${fetched.length} cards`)) // Log success
+      );
+    }
+
     // Query the server for cards with field/constraint pairs as a dictionary
     searchCardsByFieldsValues(parameters : {[field : string]: string}) : Observable<Card[]> {    
       // First we build up the query string based on the field-value pairs; so it becomes:

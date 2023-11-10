@@ -1,12 +1,16 @@
-$cardheight: 370px;
-$cardwidth: 265px;
+$baseheight: 370px;
+$basewidth: 265px;
+
+$cardheight: 100%;
+$cardwidth: 100%;
 
 .imgcontainer {
     width: $cardwidth;
     height: $cardheight;
     
-    position: absolute;
+    position: relative;
     background-size: contain;
+    text-align: center;
 
     .flip {
         background-color: rgba(255,255,255,0.5);
@@ -19,8 +23,9 @@ $cardwidth: 265px;
 
         position: absolute;
         margin: 0 auto;
-        bottom: 25px;
-        left: calc($cardwidth/2) - 25px;
+        bottom: 15%;
+
+        transform: translate(-25px,0px);
         cursor: pointer;
     }
     
@@ -40,6 +45,6 @@ $cardwidth: 265px;
         display: table;
         margin: 0 auto;
         margin-top: 1px;
-        top: $cardheight - 150px;
+        top: 50%;
     }
 }

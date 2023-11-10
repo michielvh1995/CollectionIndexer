@@ -7,11 +7,12 @@ export class CardSelection extends BaseSelection {
     public Colours? : ColourSelection;
     public Rarities? : RaritySelection;
 
-
     public Name? : string;
     public StrictName : boolean = false;
     public Setname? : string;
+    public Number? : string;
     public PageNo? : number;
+
   
     constructor(name? : string, strictName?: 
         boolean, set? : string,
@@ -53,6 +54,18 @@ export class CardSelection extends BaseSelection {
       if(this.Rarities) query += `+${this.Rarities.ToScryfallQuery()}`;
       return query;
     }
+
+    public ToDictionary() : {[key:string]: any} {
+      var dict : {[key:string]: any} = {};
+
+      if(this.Name) dict["name"] = this.Name;
+      if(this.Setname) dict["set"] = this.Setname;
+      if(this.Number) dict["number"] = this.Number;
+      if(this.PageNo) dict["page"] = this.PageNo;
+      if(this.Colours) dict["colours"] = this.Colours.ToList();
+
+      return dict;
+    }
   }
 
 export class ColourSelection extends BaseSelection {
@@ -89,7 +102,12 @@ export class ColourSelection extends BaseSelection {
       if(this.B) return false; 
       if(this.R) return false; 
       if(this.G) return false; 
-    };
+    }
+    // We need to do nothing if it has no values at all
+    if(!this.W && !this.U && !this.B && !this.R && !this.G && !this.C)
+      return false;
+
+    // Finally the default
     return true;
   }
 
@@ -126,6 +144,22 @@ export class ColourSelection extends BaseSelection {
       
     return `(id${this.MatchType}${query})`;
   }
+
+  public ToList() {
+    if(!this.Validate()) return [];
+    
+    var list : string[] = [];
+    if(this.W) list.push('W');
+    if(this.U) list.push('U');
+    if(this.B) list.push('B');
+    if(this.R) list.push('R');
+    if(this.G) list.push('G');
+    if(this.C) list.push('C');
+
+    return list;
+  }
+
+
 }
 
 export class RaritySelection extends BaseSelection {

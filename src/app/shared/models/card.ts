@@ -8,18 +8,17 @@ export interface Card {
 
 export interface CardVersion {
     card_count: number;
-
-    // These are the properties maintained by wizards of the coast
-    multiverseID?: number;
     set_code? : string;
     number? : string;
+    finish? : string;
+
+    multiverseID?: number;
 
     // This is information regarding the cards themselves
     location? : string;
 
     // TODO: Replace foil with the finish
     foil? : boolean;
-    finish? : string;
     
     // Extra annotation
     image_url? : string;
