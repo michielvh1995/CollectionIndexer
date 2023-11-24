@@ -28,34 +28,15 @@ export class ScryfallAPIService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
-  private scryfallListToCards(scryfallData:ScryfallCardListAPIModel) : Card[] {
-    // id? : string;
-    // multiverse_ids? : number[];
-    // cardmarket_id? : number;
-    // image_uris? : { [key:string] : string };
-    // promo_types? : string[];
-    // finishes? : string[]
+  public scryfallListToCards(scryfallData:ScryfallCardListAPIModel) : Card[] {
     var cardsArray : Card[] = [];
     if(!scryfallData.data) return [];
 
-    for (let i = 0; i < scryfallData.data.length; i++) {
-        var card = {
-          "name" : scryfallData.data[i].name,
-          "versions" : [{
-            "card_count": 1,
-            "set_code" : scryfallData.data[i].set,
-            "number" : scryfallData.data[i].collector_number,
-            "image_url" : scryfallData.data[i].image_uris["normal"]
-          }]
-        } as Card;
-        cardsArray.push(card);
-    }
+    for (let i = 0; i < scryfallData.data.length; i++)
+        cardsArray.push(Card.FromScryfallCard(scryfallData.data[i]));
 
     return cardsArray;
   }
-
-
-  
 
   // Oh dear...
   // De scryfall API heeft veel meer opties dan de MTG.io API.
@@ -140,10 +121,13 @@ export interface ScryfallCardAPIModel extends ScryfallAPIModel {
   image_uris : { [key:string] : string };
   card_faces?: { image_uris: {[key:string] : string} }[];
   promo_types? : string[];
-  finishes? : string[]
+  finishes? : string[];
   name? : string;
   set?: string;
   collector_number?: string;
+
+  color_identity? : string[];
+  rarity? : string;
 }
 
 
@@ -153,3 +137,5 @@ export interface ScryfallCardListAPIModel extends ScryfallAPIModel {
   next_page? : string;
   data : ScryfallCardAPIModel[];
 }
+
+

@@ -1,29 +1,35 @@
 export abstract class BaseSelection {
   public abstract Validate() : boolean;
   public abstract ToScryfallQuery() : string;
+  public abstract ToDictionary() : {[key:string]: any};
 }
 
 export class CardSelection extends BaseSelection {
     public Colours? : ColourSelection;
     public Rarities? : RaritySelection;
+    public Sets? : SetSelection;
 
     public Name? : string;
     public StrictName : boolean = false;
-    public Setname? : string;
     public Number? : string;
     public PageNo? : number;
 
-  
-    constructor(name? : string, strictName?: 
-        boolean, set? : string,
+    public Setname? : string;
+
+    constructor(name? : string, 
+        strictName?: boolean,
+        set? : string,
+        number? : string,
         colourFilter? : ColourSelection,
         rarityFilter? : RaritySelection,
+        setFilter? : SetSelection,
         page? : number) 
     {
       super();
 
       this.Colours = colourFilter;
       this.Rarities = rarityFilter;
+      this.Sets = setFilter;
       this.Name = name;
       this.Setname = set;
       this.PageNo = page;
@@ -33,10 +39,9 @@ export class CardSelection extends BaseSelection {
     }
 
     public Validate() : boolean {
-      var valid : boolean = true;
-      if(this.Colours) if(!this.Colours.Validate()) valid = false;
-      if(this.Rarities) if(!this.Rarities.Validate()) valid = false;
-      return valid;
+      if(this.Colours) if(!this.Colours.Validate()) return false;
+      if(this.Rarities) if(!this.Rarities.Validate()) return false;
+      return true;
     }
     
     // TODO: Move this to the Scryfall API?
@@ -63,34 +68,67 @@ export class CardSelection extends BaseSelection {
       if(this.Number) dict["number"] = this.Number;
       if(this.PageNo) dict["page"] = this.PageNo;
       if(this.Colours) dict["colours"] = this.Colours.ToList();
+      if(this.Rarities) dict["rarities"] = this.Rarities.ToList();
+      if(this.Sets) dict["sets"] = this.Sets.ToList();
 
       return dict;
     }
   }
 
-export class ColourSelection extends BaseSelection {
-  public W : boolean;
-  public U : boolean;
-  public B : boolean;
-  public R : boolean;
-  public G : boolean;
-  public C : boolean;
-  public MatchType : string;
+export class CardSelectionGeneric extends CardSelection {
+  public Filters : BaseSelection[];
 
   constructor(
-      w: boolean = false, u: boolean = false, b: boolean = false,
-      r: boolean = false, g: boolean = false, c: boolean = false,
-      matchType: string = '='
-      ) {
-    super();
+    Name? : string, 
+    StrictName : boolean = false,
+    Number? : string,
+    colourFilter? : ColourSelection,
+    rarityFilter? : RaritySelection,
+    setFilter? : SetSelection,
+    PageNo : number = 1)
+  {
+    super(Name, StrictName, Number, undefined, undefined, undefined, undefined, PageNo);
+    
+    this.Filters = [];
+    if(colourFilter) this.Filters.push(colourFilter);
+    if(rarityFilter) this.Filters.push(rarityFilter);
+    if(setFilter) this.Filters.push(setFilter);
+  }
 
-    this.W = w;
-    this.U = u;
-    this.B = b;
-    this.R = r;
-    this.G = g;
-    this.C = c;
-    this.MatchType = matchType;
+  public AddFilter(filter : BaseSelection) : void {
+    this.Filters.push(filter);
+  }
+
+  public override Validate() : boolean{
+    for (let i = 0; i < this.Filters.length; i++)
+      if (!this.Filters[i].Validate()) return false;
+    
+    return true;
+  }
+
+  public override ToDictionary(): { [key: string]: any; } {
+    var dict : {[key:string]: any} = {};
+
+    if(this.Name) dict["name"] = this.Name;
+    if(this.Number) dict["number"] = this.Number;
+    if(this.PageNo) dict["page"] = this.PageNo;
+
+    // Then we add all the key-value pairs from the fitlers to this one:
+    for (let i = 0; i < this.Filters.length; i++)
+      dict = {... dict,...this.Filters[i].ToDictionary};
+
+    return dict;
+  }
+}
+
+
+export class ColourSelection extends BaseSelection {
+  constructor(
+      public W: boolean = false, public U: boolean = false, public B: boolean = false,
+      public R: boolean = false, public G: boolean = false, public C: boolean = false,
+      public MatchType: string = '='
+    ) {
+    super();
   }
 
   // Cards are either coloured or colourless. Not both.
@@ -103,9 +141,6 @@ export class ColourSelection extends BaseSelection {
       if(this.R) return false; 
       if(this.G) return false; 
     }
-    // We need to do nothing if it has no values at all
-    if(!this.W && !this.U && !this.B && !this.R && !this.G && !this.C)
-      return false;
 
     // Finally the default
     return true;
@@ -145,9 +180,11 @@ export class ColourSelection extends BaseSelection {
     return `(id${this.MatchType}${query})`;
   }
 
+  public ToDictionary(): { [key: string]: any; } {
+    return { 'ColourMatchType': this.MatchType, 'colours': this.ToList() };
+  }
+
   public ToList() {
-    if(!this.Validate()) return [];
-    
     var list : string[] = [];
     if(this.W) list.push('W');
     if(this.U) list.push('U');
@@ -163,19 +200,15 @@ export class ColourSelection extends BaseSelection {
 }
 
 export class RaritySelection extends BaseSelection {
-  public Rarities? : string[];
-
-  constructor(rarities? : string[]) {
+  constructor(public Rarities : string[] = [], public MatchType : string = '=') {
     super();
-
-    this.Rarities = rarities;
   }
 
-  public Validate() : boolean {
-    if(this.Rarities != undefined)
-      return true;
-    else
-      return false;
+  public Validate() : boolean { return this.Rarities != undefined; }
+  public ToList() : string[] { return this.Rarities; }
+
+  public ToDictionary(): { [key: string]: any; } {
+    return { 'RarityMatchType': this.MatchType, 'rarities': this.ToList() };
   }
 
   public ToScryfallQuery() : string {
@@ -185,4 +218,24 @@ export class RaritySelection extends BaseSelection {
     
     return query;
   }
+}
+
+export class SetSelection extends BaseSelection {
+  constructor(public Sets : string[] = [], public MatchType : string = '=') { super(); }
+  
+  public First() : string {
+    if(this.Sets[0])
+      return this.Sets[0];
+
+    return "";
+  }
+
+  public Validate(): boolean { return this.Sets != undefined; }
+  public ToList() : string[] { return this.Sets; }
+
+  public ToDictionary() : { [key: string]: any; } { 
+    return { 'SetMatchType' : this.MatchType, 'sets': this.Sets }; 
+  }
+  
+  public ToScryfallQuery() : string { return ""; }
 }

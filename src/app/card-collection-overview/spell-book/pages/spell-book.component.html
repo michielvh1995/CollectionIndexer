@@ -46,10 +46,14 @@
 
     <div class="right">
         <div class="card-filter-form">
-            <span>Show missing: <input type="checkbox"></span>
+            <span class="missing-options">
+                <span>Show missing: <input type="checkbox"></span>
+                <span>Boosterfun: <input type="checkbox"></span>
+            </span>
             <app-card-filter [enableSet]="false" name="cardFilter"></app-card-filter>
             <button (click)="FilterCollection()">Filter</button>
             <button (click)="Reset()">Reset</button>
+            <button (click)="TrickleDownUpdates()">Update db</button>
         </div>
 
         <div class="card-display">
@@ -58,12 +62,15 @@
                     <app-card-display [card]="crd"></app-card-display>
                 </div>
                 <span *ngFor="let ver of crd.versions" class="count-container">
-                    <span *ngIf="!ver.finish">
-                        <span *ngIf="!ver.foil">Non-foil:</span>
-                        <span *ngIf="ver.foil">Foil:</span>
+                    <span *ngIf="ver.card_count">
+                        <!-- <span *ngIf="!ver.finish">
+                            <span *ngIf="!ver.foil">Non-foil:</span>
+                            <span *ngIf="ver.foil">Foil:</span>
+                        </span> -->
+                        <span>{{ver.finish}}:</span>
+                        <span class="count-div">{{ver.card_count}}</span>
                     </span>
-                    <span *ngIf="ver.finish">{{ver.finish}}:</span>
-                    <span class="count-div">{{ver.card_count}}</span>
+                    <span *ngIf="!ver.card_count">Missing!</span>
                 </span>
             </span>
         </div>

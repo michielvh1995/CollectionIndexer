@@ -50,6 +50,6 @@ export class CardFilterComponent {
     if(this.cardSelectorForm.value.cardStrictNameControl)
       strictName = true;
 
-    return new CardSelection(cardName, strictName, cardSet, this.colourSelector.ReadData(), this.raritySelector.ReadData());
+    return new CardSelection(cardName, strictName, cardSet, undefined, this.colourSelector.ReadData(), this.raritySelector.ReadData());
   }
 }

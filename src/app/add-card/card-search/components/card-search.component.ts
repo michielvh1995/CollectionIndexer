@@ -50,7 +50,8 @@ export class CardSearchComponent {
         this.totalQueried = fetched.total_cards;
         
         // Now we have to breakdown to cards...
-        this.queriedCards = this._scryfallToCards(fetched);
+        this.queriedCards = this.scryfallAPIService.scryfallListToCards(fetched);
+        // this.queriedCards = this._scryfallToCards(fetched);
       });
     }
 
@@ -71,44 +72,5 @@ export class CardSearchComponent {
       }
        // Page 1 is the first page possible
       if(this.pageNo == 1) this.HasPrevious = false;
-    }
-
-
-    _scryfallCardToCard(scryfallCard : ScryfallCardAPIModel) : Card {
-      // console.log(`${scryfallCard.set}:${scryfallCard.collector_number}`);
-      var card = {"name" : scryfallCard.name,
-      "versions" : [{
-        "card_count": 1,
-        "set_code" : scryfallCard.set,
-        "number" : scryfallCard.collector_number,
-
-        "promotypes" : scryfallCard.promo_types,
-        "possible_finishes" : scryfallCard.finishes
-      }]} as Card;
-
-      // currently this is the best check to see if a card is dual-faced...
-      // There are "double" cards on front-faces (i.e. adventures or dusk // dawn etc).
-      // but these all have image_uris in the first layer of their JSON.
-      // The dual faced ones do not have this
-      if(scryfallCard.image_uris)
-        card.versions[0].image_url = scryfallCard.image_uris["normal"];
-      else if(scryfallCard.card_faces) {
-        card.dual_face = true;
-        card.versions[0].image_url = scryfallCard.card_faces[0]["image_uris"]["normal"];
-        card.versions[0].backside_image = scryfallCard.card_faces[1]["image_uris"]["normal"];
-      }
-        
-
-      return card;
-    }
-
-    private _scryfallToCards(scryfallData : ScryfallCardListAPIModel) {
-      var cardsArray : Card[] = [];
-      if(!scryfallData.data) return [];
-
-      for (let i = 0; i < scryfallData.data.length; i++)
-          cardsArray.push(this._scryfallCardToCard(scryfallData.data[i]));
-
-      return cardsArray;
     }
 }

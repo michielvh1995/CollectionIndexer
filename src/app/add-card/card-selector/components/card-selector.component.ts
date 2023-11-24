@@ -128,8 +128,8 @@ export class CardSelectorComponent {
       "number" : this.card.versions[0].number,
       
       // TEMPORARY: Remove this with the updated card model
-      "foil" : (finish !== "nonfoil"),
-      // "finish" : finish
+      // "foil" : (finish !== "nonfoil"),
+      "finish" : finish
     } 
   }
 }
