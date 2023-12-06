@@ -121,7 +121,7 @@ export class CollecteDBService  {
         for (let j = 0; j < cards[i].versions.length; j++) {
           const version = cards[i].versions[j];
           newVersions.push({
-            "card_count": version.card_count,
+            "card_count": 0,
             "set_code": version.set_code,
             "number": version.number,
             "finish" :  version.finish,
@@ -138,15 +138,29 @@ export class CollecteDBService  {
     // This function can be used to post a single new card to the server
     postNewCards(cards : Card[]) : Observable<CardsAPIModel> {
       this.log(`Posting ${cards.length} cards`);
+      console.log(cards);
+      
       let cardWrapper : CardsAPIModel = {"Cards" : cards };
       
       console.log(cards[0]);
-      
       
       return this.http.post<CardsAPIModel>(`${this.apiURL}cards/new/`, cardWrapper, this.httpOptions).pipe(
         map(newCards => newCards.Cards),
         tap(newCards => this.log(`Added ${newCards.length} cards`)),
         catchError(this.handleError<any>('PostNewCards'))
+      );
+    }
+
+    public UpdateCards(cards : Card[]) : Observable<CardsAPIModel> {
+      this.log(`Updating ${cards.length} cards.`);
+      console.log(cards[0]);
+
+      let cardWrapper : CardsAPIModel = {"Cards" : this.TrimCards(cards) };
+      
+      return this.http.post<CardsAPIModel>(`${this.apiURL}cards/new/`, cardWrapper, this.httpOptions).pipe(
+        map(newCards => newCards.Cards),
+        tap(newCards => this.log(`Updated values on ${newCards.length} cards`)),
+        catchError(this.handleError<any>('UpdateCards'))
       );
     }
 

@@ -45,6 +45,9 @@ export class CardSelectorComponent {
   // Set the values retrieved from the scryfall API locally
   // Then we calculate all fields that are derived from them (i.e. the form control)
   setInformation() {
+    console.log("On init of the card-selector we still have the rarity.");
+    console.log(this.card);
+    
     if(this.card.versions[0].possible_finishes !== undefined) {
       this.finishes=this.card.versions[0].possible_finishes;
     } else {
@@ -52,9 +55,6 @@ export class CardSelectorComponent {
       return;
     }
 
-    if(this.card.versions[0].possible_finishes !== undefined) 
-      this.finishes=this.card.versions[0].possible_finishes;
-      
     this.setupFormControl();    
   }
 
@@ -73,13 +73,24 @@ export class CardSelectorComponent {
   public SubmitCards() {
     if(this.Submitted) return;
 
+    console.log("Card-selector, before readData()");  
+    console.log(this.card);
+    
+
     this.readData();
     
     // Set submitted
     this.Submitted = true;
     this.Status = "pending";
     this.ref.detectChanges();
+
+    console.log("We're now submitting cards in card-selector");
+    console.log(this.card);
+    console.log("We're lacking the rarity field here.");
     
+    
+    
+
     this.collecteDBService.postNewCards([this.card]).subscribe(res => {
       if(!res) {
         this.Status = "failure";
@@ -126,9 +137,7 @@ export class CardSelectorComponent {
       "multiverseID" : this.card.versions[0].multiverseID,
       "set_code" : this.card.versions[0].set_code,
       "number" : this.card.versions[0].number,
-      
-      // TEMPORARY: Remove this with the updated card model
-      // "foil" : (finish !== "nonfoil"),
+      "rarity" : this.card.versions[0].rarity,      
       "finish" : finish
     } 
   }

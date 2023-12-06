@@ -48,10 +48,12 @@ export class CardSearchComponent {
         
         // To display the showing x out of Y cards
         this.totalQueried = fetched.total_cards;
-        
+
         // Now we have to breakdown to cards...
         this.queriedCards = this.scryfallAPIService.scryfallListToCards(fetched);
-        // this.queriedCards = this._scryfallToCards(fetched);
+
+        console.log("We're inside card-search, querying cards, here are the search results:");
+        console.log(this.queriedCards);
       });
     }
 

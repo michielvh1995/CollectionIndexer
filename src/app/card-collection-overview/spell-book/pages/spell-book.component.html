@@ -1,54 +1,28 @@
 <div class="spell-book-container">
-    <div class="set-bar" [ngClass]="expanded ? 'open' : 'closed'">
-        <Button id="expand" (click)="ToggleSideBar()">
-            <span *ngIf="!expanded">-></span>
-            <span *ngIf="expanded"><- Close</span>
-        </Button>
-        <div class="set-selector">
-            <Button>Set 1</Button>
-            <Button>Set 2</Button>
-            <Button>Set 3</Button>
-            <Button>Set 4</Button>
-            <Button>Set 5</Button>
-            <Button>Set 6</Button>
-            <Button>Set 7</Button>
-            <Button>Set 8</Button>
-            <Button>Set 9</Button>
-            <Button>Set 10</Button>
-            <Button>Set 11</Button>
-            <Button>Set 12</Button>
-            <Button>Set 13</Button>
-            <Button>Set 14</Button>
-            <Button>Hallo</Button>
-            <Button>Hallo</Button>
-            <Button>Hallo</Button>
-            <Button>Hallo</Button>
-            <Button>Hallo</Button>
-            <Button>Hallo</Button>
-            <Button>Hallo</Button>
-            <Button>Hallo</Button>
-            <Button>Hallo</Button>
-            <Button>Hallo</Button>
-            <Button>Hallo</Button>
-            <Button>Hallo</Button>
-            <Button>Hallo</Button>
-            <Button>Hallo</Button>
-            <Button>Hallo</Button>
-            <Button>Hallo</Button>
-            <Button>Hallo</Button>
-            <Button>Hallo</Button>
-            <Button>Hallo</Button>
-            <Button>Hallo</Button>
-            <Button>Hallo</Button>
+    <div class="sets">
+        <div class="set-bar" [ngClass]="expanded ? 'open' : 'closed'">
+            <Button id="expand" (click)="ToggleSideBar()">
+                <span *ngIf="!expanded">-></span>
+                <span *ngIf="expanded"><- Close</span>
+            </Button>
+            <div class="set-selector">
+                <Button>Set 1</Button>
+                <Button>Set 2</Button>
+                <Button>Set 3</Button>
+                <Button>Set 4</Button>
+                <Button>Set 5</Button>
+                <Button>Set 6</Button>
+                <Button>Set 7</Button>
+                <Button>Set 8</Button>
+            </div>
         </div>
     </div>
 
-
     <div class="right">
-        <div class="card-filter-form">
+        <div class="card-filter-form" [formGroup]="spellbookForm">
             <span class="missing-options">
-                <span>Show missing: <input type="checkbox"></span>
-                <span>Boosterfun: <input type="checkbox"></span>
+                <span>Show missing: <input type="checkbox" formControlName="missingControl"></span>
+                <span>Boosterfun: <input type="checkbox" formControlName="boosterfunControl"></span>
             </span>
             <app-card-filter [enableSet]="false" name="cardFilter"></app-card-filter>
             <button (click)="FilterCollection()">Filter</button>
@@ -58,19 +32,22 @@
 
         <div class="card-display">
             <span class="card-container" *ngFor="let crd of this.cards">
+                <div [ngClass]="crd.missing ? 'missing' : 'here'"> </div>
                 <div class="display" >
                     <app-card-display [card]="crd"></app-card-display>
                 </div>
-                <span *ngFor="let ver of crd.versions" class="count-container">
-                    <span *ngIf="ver.card_count">
-                        <!-- <span *ngIf="!ver.finish">
-                            <span *ngIf="!ver.foil">Non-foil:</span>
-                            <span *ngIf="ver.foil">Foil:</span>
-                        </span> -->
-                        <span>{{ver.finish}}:</span>
-                        <span class="count-div">{{ver.card_count}}</span>
+                <span>
+                    <span *ngIf="!crd.missing">
+                        <span *ngFor="let ver of crd.versions" class="count-container">
+                            <span>{{ver.finish}}:</span>
+                            <span class="count-div">{{ver.card_count}}</span>
+                        </span>
                     </span>
-                    <span *ngIf="!ver.card_count">Missing!</span>
+                    <span *ngIf="crd.missing">
+                        <span class="count-container">
+                            <span>Missing!</span>
+                        </span>
+                    </span>
                 </span>
             </span>
         </div>

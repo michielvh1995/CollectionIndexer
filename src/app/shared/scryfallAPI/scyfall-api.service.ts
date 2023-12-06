@@ -30,11 +30,12 @@ export class ScryfallAPIService {
 
   public scryfallListToCards(scryfallData:ScryfallCardListAPIModel) : Card[] {
     var cardsArray : Card[] = [];
+
     if(!scryfallData.data) return [];
 
     for (let i = 0; i < scryfallData.data.length; i++)
         cardsArray.push(Card.FromScryfallCard(scryfallData.data[i]));
-
+    
     return cardsArray;
   }
 
@@ -55,14 +56,19 @@ export class ScryfallAPIService {
     );  
   }
 
-  public new_searchForCards(queryString : string, pageNo : number) : Observable<ScryfallCardListAPIModel> {
-    this.log(`${this.apiURL}search?unique=prints&order=name&page=${pageNo}&q=${queryString}`);
+  public new_searchForCards(queryString : string, pageNo : number, uniqueType = "prints") : Observable<ScryfallCardListAPIModel> {
+    // scryfallQuery =`${this.apiURL}search?unique=prints&page=${pageNo}&q=${queryString}`;
+    
+    // if(uniqueType) 
+    var scryfallQuery =`${this.apiURL}search?unique=${uniqueType}&page=${pageNo}&q=${queryString}`;
 
-    return this.http.get<ScryfallAPIModel>(`${this.apiURL}search?unique=prints&page=${pageNo}&q=${queryString}`)
+    this.log(scryfallQuery);
+
+    return this.http.get<ScryfallAPIModel>(scryfallQuery)
     .pipe(
       catchError(this.handleError<ScryfallCardListAPIModel>('Search for cards', {"data": [], "object": "error", "total_cards" : 0})),
       map(res => this.reportScryfallErrorcodes<ScryfallCardListAPIModel>(res, {"data": [], "object": "error", "total_cards" : 0}))
-    );  
+    );
   }
 
   // Just get all the information we need from the Scryfall API.
@@ -121,10 +127,10 @@ export interface ScryfallCardAPIModel extends ScryfallAPIModel {
   image_uris : { [key:string] : string };
   card_faces?: { image_uris: {[key:string] : string} }[];
   promo_types? : string[];
-  finishes? : string[];
-  name? : string;
-  set?: string;
-  collector_number?: string;
+  finishes : string[];
+  name : string;
+  set: string;
+  collector_number: string;
 
   color_identity? : string[];
   rarity? : string;

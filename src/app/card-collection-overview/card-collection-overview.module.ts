@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { SpellBookComponent } from './spell-book/components/spell-book.component';
 import { CardFilterModule } from '../card-filter/card-filter.module';
 import { CardDisplayModule } from "../card-display/card-display.module";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -15,7 +16,9 @@ import { CardDisplayModule } from "../card-display/card-display.module";
     imports: [
         CommonModule,
         CardFilterModule,
-        CardDisplayModule
+        CardDisplayModule,
+        FormsModule,
+        ReactiveFormsModule
     ]
 })
 export class CardCollectionOverviewModule { }

@@ -2,10 +2,11 @@ import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { CardFilterComponent } from '../../../card-filter/card-filter/components/card-filter.component';
 
 import { CollecteDBService } from '../../../shared/collecteDB/collecte-db.service';
-import { ScryfallAPIService, ScryfallCardAPIModel, ScryfallCardListAPIModel } from '../../../shared/scryfallAPI/scyfall-api.service';
+import { ScryfallAPIService } from '../../../shared/scryfallAPI/scyfall-api.service';
 
 import { Card, CardVersion } from '../../../shared/models/card';
 import { MessageService } from '../../../shared/messages/services/messages.service';
+import { FormControl, FormGroup } from '@angular/forms';
 
 
 @Component({
@@ -21,6 +22,11 @@ export class SpellBookComponent {
     private ref: ChangeDetectorRef
     )
   {}
+
+  spellbookForm = new FormGroup({
+    missingControl : new FormControl(false),
+    boosterfunControl : new FormControl(false),
+  });
   
   cards : Card[] = [];
   expanded : Boolean = false;
@@ -45,50 +51,47 @@ export class SpellBookComponent {
   }
 
   FilterCollection() : void {
-    var query = this.cardFilter.ReadData();
+    let query = this.cardFilter.ReadData();
     query.Setname = this.set;
     
-    var ownCards : Card[] = [];
+    // Enable or disable show missing
+    if(this.spellbookForm.value.missingControl != undefined)
+      this.showMissing = this.spellbookForm.value.missingControl;
 
-    // var pageNo = 1;
+    // Enable or disable boosterfun.
+    let uniqueType = "name";
+    if(this.spellbookForm.value.boosterfunControl === true) uniqueType = "prints";
+    
+    let ownCards : Card[] = [];
+
+    // let pageNo = 1;
     // We need to call the scryfallAPI service for the cards from scryfall....
-    this.scryfallService.new_searchForCards(query.ToScryfallQuery(), 1).subscribe(fetched => {
-      // var scryfallCards : ScryfallCardAPIModel[] = [];
-
-      this.messageServce.add(`Retrieved ${fetched.total_cards} cards using the ScryfallAPI`);
-
-      var queriedCards = this.scryfallService.scryfallListToCards(fetched);
-
+    this.scryfallService.new_searchForCards(query.ToScryfallQuery(), 1, uniqueType).subscribe(fetched => {
+      let queriedCards = this.scryfallService.scryfallListToCards(fetched);
+      
       // Then we need to retrieve the cards we own in our collection
       this.collecteDBService.queryCards(query).subscribe(fsc => {
-        this.messageServce.add(`SpellBook: Retrieved ${fsc.length} cards from collection.`);
+        console.log(`SpellBook: Retrieved ${fsc.length} cards from collection.`);
         
         // We need to flatten down the card model we receive from the collecteDB service
         ownCards = this.flattenCards(fsc);
         
         // Then we need to annotate the ScryfallCards with their numbers:
-        this.cards = this.addCardCounts(queriedCards, ownCards);
+        this.cards = this.addCardCounts(queriedCards, fsc);
         console.log(`In total we have now annotated ${this.cards.length} cards`);
           
-        if(!queriedCards.length || !ownCards.length) {
-          console.log(`Either no cards found on scryfall (${queriedCards.length}) or in our database (${ownCards.length})!`);
-        }
+        if(!queriedCards.length || !ownCards.length)
+          this.messageServce.add(`Either no cards found on scryfall (${queriedCards.length}) or in our database (${ownCards.length})! Show missing cards is set to ${this.showMissing}.`);
+
       });      
 
       this.ref.detectChanges();
     });
-
-        
   }
 
   TrickleDownUpdates() : void {
-    for (let i = 0; i < this.cards.length; i++)
-      for(let j = 0; j < this.cards[i].versions.length; j++)
-        this.cards[i].versions[j].card_count = 0;
     
-    this.cards = this.collecteDBService.TrimCards(this.cards);
-    
-    this.collecteDBService.postNewCards(this.cards).subscribe(res => {
+    this.collecteDBService.UpdateCards(this.cards).subscribe(res => {
       if(!res) {
         this.ref.detectChanges();
         console.log(`Failure to submit;`);
@@ -106,61 +109,88 @@ export class SpellBookComponent {
         this.messageServce.add(`Retrieved ${fetched.length} cards.`);
         
         // We need additional information for the cards
-        this.cards = this.flattenCards(this.annotateCards(fetched));
+        this.cards = this.flattenCards(this.annotateCards(fetched));        
     });
   }
 
-  private addCardCounts(cards : Card[], cardCounts : Card[]) {
-    var newCards : Card[] = [];
+  // CUrrently the bug in thisfunction is: 
+  // in the Scryfallmodel we do not have a finish field. Only possible finishes.
+  private mergeVersions(card : Card, card2: Card) : CardVersion[] {
+    // First we fill a dictionary with versions, then update their counts.
+    let versionsDictionary : {[key:string] : CardVersion} = {};
 
-    for (let j = 0; j < cards.length; j++) {
-      const card = cards[j];
-      
-      var newVersions : CardVersion[] = [];
-      for (let i = 0; i < cardCounts.length; i++) {
-        const counterCard = cardCounts[i];
-
-        if(counterCard.versions[0].number === card.versions[0].number && counterCard.versions[0].set_code === card.versions[0].set_code) {
-          // Then create a new list of versions; containing the information from both.
-          for (const version in counterCard.versions) {
-            if (Object.prototype.hasOwnProperty.call(counterCard.versions, version)) {
-              const ccVersion = counterCard.versions[version];
-              newVersions.push({
-                "card_count" : ccVersion.card_count,
-                "set_code" : ccVersion.set_code,
-                "number" : ccVersion.number,
-                "finish" : ccVersion.finish,
-                "image_url" : card.versions[0].image_url,
-                "backside_image" : card.versions[0].backside_image,
-                "promotypes" : card.versions[0].promotypes,
-              });
-            }
-          }
-
-        }      
-      } // End of cardCounts loop
-      if(newVersions.length) {
-        card.versions = newVersions;
-        newCards.push(card);
-      } else if(this.showMissing) {
-        card.versions[0].card_count = 0;
-        newCards.push(card);
-      }
-      
+    for(const version of card.versions) {
+      const key = `${version.set_code}${version.number}${version.finish}`;
+      versionsDictionary[key] = version;
     }
-    return newCards;
+
+    // Then add the counts if they're the same version.
+    for(const version of card2.versions) {
+      const key = `${version.set_code}${version.number}${version.finish}`;
+
+      if(key in versionsDictionary) 
+        versionsDictionary[key].card_count = version.card_count;
+    }
+
+    return Object.values(versionsDictionary);
   }
 
-  private annotateCards(cards: Card[]) : Card[] {
-    var out_cards : Card[] = [];
-    for (let j = 0; j < cards.length; j++) {
-      const card = cards[j];
+  // The inner for-loop, combined with the mergeVersions function does a lot of double work.
+  // TODO: Refactor this.
+  private addCardCounts(cards : Card[], cardCounts : Card[]) {    
+    // First we fill the cardDictionary with the card versions
+    let cardDictionary : {[key:string] : Card} = {};
+
+    for(const card of cards) {
+      let key = `${card.versions[0].set_code}${card.versions[0].number}`;
       
-      // Then loop over the versions, flatten them and push them to the array
-      for (let i = 0; i < card.versions.length; i++) {
-        var e = card.versions[i];
-        e.image_url= `https://api.scryfall.com/cards/${e.set_code}/${e.number}?format=image`;
+      cardDictionary[key] = card;
+    }
+
+    // Now loop over all the versions in the cardCounts array
+    for(const card of cardCounts) {
+      for(const version of card.versions) {
+        // If the setcode/number combination exists in the dictionary.
+        const key = `${version.set_code}${version.number}`;
+
+        if(key in cardDictionary) 
+          cardDictionary[key].versions = this.mergeVersions(cardDictionary[key], card);
       }
+    }
+
+    // We return everything if we show the missing cards as well. Otherwise we filter.
+    
+    let cardList : Card[] = [];
+    for(const key in cardDictionary) {
+      let sum = 0;
+      for(const version of cardDictionary[key].versions)
+        sum += version.card_count;
+
+      // We also set the card as missing, for display purposes.
+      // There should be a more efficient way.
+      // TODO: Refactor this
+      if(sum === 0) cardDictionary[key].missing = true;
+      if(sum > 0) cardList.push(cardDictionary[key]);
+    }
+
+    if(this.showMissing)
+      return Object.values(cardDictionary);
+
+    return cardList;
+  }
+
+  // The cards array input is a pass-by-reference. As such the input array gets edited as well.
+  // This can either be used to our advantage of needs to be removed.
+  // TODO: Refactor this
+  private annotateCards(cards: Card[]) : Card[] {
+    let out_cards : Card[] = [];
+    
+    for(const card of cards ) {
+
+      for(let version of card.versions) {
+        version.image_url = `https://api.scryfall.com/cards/${version.set_code}/${version.number}?format=image`;
+      }
+
       out_cards.push(card);
     }
     
@@ -169,11 +199,10 @@ export class SpellBookComponent {
 
   // This function "flattens" a card: it creates a new Card instance per version.
   private flattenCards(cards: Card[]) : Card[] {
-    var out_cards : Card[] = [];
+    let out_cards : Card[] = [];
 
-    for (let i = 0; i < cards.length; i++) {
-      const card = cards[i];      
-      var grouped : {[key:string]:CardVersion[]}= {};
+    for (const card of cards) {
+      let grouped : {[key:string]:CardVersion[]}= {};
       
       // We loop over the version in the card to check whether or not it has been seen before,
       //   based off of the set_code+number.

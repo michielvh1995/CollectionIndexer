@@ -12,9 +12,12 @@ export class CardSelection extends BaseSelection {
     public Name? : string;
     public StrictName : boolean = false;
     public Number? : string;
-    public PageNo? : number;
+    
 
     public Setname? : string;
+
+    public PageNo? : number;
+    public UniquesType? : string;
 
     constructor(name? : string, 
         strictName?: boolean,
@@ -23,16 +26,19 @@ export class CardSelection extends BaseSelection {
         colourFilter? : ColourSelection,
         rarityFilter? : RaritySelection,
         setFilter? : SetSelection,
-        page? : number) 
+        page? : number,
+        uniques? : string) 
     {
       super();
 
       this.Colours = colourFilter;
       this.Rarities = rarityFilter;
+      this.Number = number;
       this.Sets = setFilter;
       this.Name = name;
       this.Setname = set;
       this.PageNo = page;
+      this.UniquesType = uniques;
 
       if(strictName != undefined)
         this.StrictName = strictName;
@@ -70,6 +76,7 @@ export class CardSelection extends BaseSelection {
       if(this.Colours) dict["colours"] = this.Colours.ToList();
       if(this.Rarities) dict["rarities"] = this.Rarities.ToList();
       if(this.Sets) dict["sets"] = this.Sets.ToList();
+      if(this.UniquesType) dict["uniqueTypes"] = this.UniquesType;
 
       return dict;
     }

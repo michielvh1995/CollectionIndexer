@@ -24,7 +24,13 @@ $sidebarOpenWidth: 250px;
 
 .open {
     width: $sidebarOpenWidth;
- }
+}
+
+.sets {
+    background-color: red;
+    overflow: scroll;
+    height: 100%;
+}
 
 .set-bar {
     display: inline-block;
@@ -112,6 +118,14 @@ $sidebarOpenWidth: 250px;
         height: $cardheight + 20px;
 
         text-align: center;
+
+        .missing {
+            background-color: rgba(170, 170, 170, 0.5);
+            position: absolute;
+            z-index: 1;
+            height: $cardheight;
+            width: $cardwidth;
+        }
         
         .display {
             display: inline-block;
