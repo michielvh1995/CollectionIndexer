@@ -43,3 +43,8 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Files to ignore:
+src/assets/convertJson.py
+src/assets/setdata_06-dec-2023.json
+src/assets/sets_06_dec_2023.json

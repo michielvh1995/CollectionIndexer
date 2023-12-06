@@ -1,0 +1,29 @@
+<div class="set-bar" [ngClass]="expanded ? 'open' : 'closed'">
+    <Button id="expand" (click)="ToggleSideBar()">
+        <span *ngIf="!expanded">-></span>
+        <span *ngIf="expanded"><- Close</span>
+    </Button>
+    <input placeholder="Search">
+    <div class="set-selector">
+        <span *ngFor="let set of all_sets">
+            
+            <button>
+                <span *ngIf="!expanded">
+                    <img src="{{set.icon}}">
+                    {{set.code}}
+                </span>
+                
+
+                <span *ngIf="expanded" class="expanded-set">
+                    <img src="{{set.icon}}">
+                    {{set.name}}
+                    <div *ngFor="let child of set.children">
+                        {{child.name}}
+                        <input type="checkbox">
+                    </div>
+                </span>
+                
+            </button>
+        </span>
+    </div>
+</div>

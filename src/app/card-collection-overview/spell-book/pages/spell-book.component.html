@@ -1,21 +1,6 @@
 <div class="spell-book-container">
     <div class="sets">
-        <div class="set-bar" [ngClass]="expanded ? 'open' : 'closed'">
-            <Button id="expand" (click)="ToggleSideBar()">
-                <span *ngIf="!expanded">-></span>
-                <span *ngIf="expanded"><- Close</span>
-            </Button>
-            <div class="set-selector">
-                <Button>Set 1</Button>
-                <Button>Set 2</Button>
-                <Button>Set 3</Button>
-                <Button>Set 4</Button>
-                <Button>Set 5</Button>
-                <Button>Set 6</Button>
-                <Button>Set 7</Button>
-                <Button>Set 8</Button>
-            </div>
-        </div>
+        <app-set-filter></app-set-filter>
     </div>
 
     <div class="right">

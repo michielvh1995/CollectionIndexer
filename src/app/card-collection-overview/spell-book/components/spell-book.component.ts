@@ -7,6 +7,7 @@ import { ScryfallAPIService } from '../../../shared/scryfallAPI/scyfall-api.serv
 import { Card, CardVersion } from '../../../shared/models/card';
 import { MessageService } from '../../../shared/messages/services/messages.service';
 import { FormControl, FormGroup } from '@angular/forms';
+import { SetFilterComponent } from '../../../card-filter/set-filter/components/set-filter.component';
 
 
 @Component({
@@ -29,7 +30,6 @@ export class SpellBookComponent {
   });
   
   cards : Card[] = [];
-  expanded : Boolean = false;
   showMissing : Boolean = false;
 
   set : string = "woe";
@@ -44,10 +44,6 @@ export class SpellBookComponent {
 
   Reset() : void {
     this.getAllCards();
-  }
-
-  ToggleSideBar() : void {
-    this.expanded = !this.expanded;
   }
 
   FilterCollection() : void {
