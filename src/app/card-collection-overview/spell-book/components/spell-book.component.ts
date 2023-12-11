@@ -29,6 +29,7 @@ export class SpellBookComponent {
     boosterfunControl : new FormControl(false),
   });
   
+  collectedCount : number = 0;
   cards : Card[] = [];
   showMissing : Boolean = false;
 
@@ -65,6 +66,9 @@ export class SpellBookComponent {
     // We need to call the scryfallAPI service for the cards from scryfall....
     this.scryfallService.new_searchForCards(query.ToScryfallQuery(), 1, uniqueType).subscribe(fetched => {
       let queriedCards = this.scryfallService.scryfallListToCards(fetched);
+
+      if(fetched.has_more) console.log("there's pagination...");
+      
       
       // Then we need to retrieve the cards we own in our collection
       this.collecteDBService.queryCards(query).subscribe(fsc => {
@@ -169,6 +173,8 @@ export class SpellBookComponent {
       if(sum === 0) cardDictionary[key].missing = true;
       if(sum > 0) cardList.push(cardDictionary[key]);
     }
+
+    this.collectedCount = cardList.length;
 
     if(this.showMissing)
       return Object.values(cardDictionary);

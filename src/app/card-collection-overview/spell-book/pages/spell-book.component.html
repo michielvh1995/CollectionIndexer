@@ -13,6 +13,15 @@
             <button (click)="FilterCollection()">Filter</button>
             <button (click)="Reset()">Reset</button>
             <button (click)="TrickleDownUpdates()">Update db</button>
+
+            <span id="countdisplay">
+                <span *ngIf="showMissing">
+                  {{collectedCount}} of {{cards.length}} cards in collection.
+                </span>
+                <span *ngIf="!showMissing">
+                    Displaying {{cards.length}} cards
+                </span>
+            </span>
         </div>
 
         <div class="card-display">
