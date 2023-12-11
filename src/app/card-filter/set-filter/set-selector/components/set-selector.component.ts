@@ -45,7 +45,7 @@ export class SetSelectorComponent {
   }
 
   public Reset() : void {
-
+    this.setsForm.reset();
   }
 
 }

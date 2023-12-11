@@ -59,9 +59,17 @@ export class SetFilterComponent extends BaseFilterComponent {
   ToggleSideBar() : void {
     this.expanded = !this.expanded;
   }
+  public ResetSearch(): void {
+    this.active_sets = this.all_sets;
+  }
 
   public Reset(): void {
-    throw new Error('Method not implemented.');
+    this.active_sets = this.all_sets;
+    
+    this.setfilters?.forEach(child => {
+      child.Reset();
+    });
+
   }
   public Disable(): void {
     throw new Error('Method not implemented.');

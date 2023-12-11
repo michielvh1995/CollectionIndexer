@@ -6,8 +6,12 @@
     <span class="set-search">
         <form (submit)="FilterSets()">
             <input type="text" placeholder="Search" [(ngModel)]="searchValue" [ngModelOptions]="{standalone: true}">
+            <button type="reset" id="reset-search-button" (click)="ResetSearch()">X</button>
             <button (click)="FilterSets()" *ngIf="expanded" id="searchbutton">
                 Search
+            </button>
+            <button type="reset" id="reset-selection-button" (click)="Reset()">
+                Reset
             </button>
         </form>
     </span>
