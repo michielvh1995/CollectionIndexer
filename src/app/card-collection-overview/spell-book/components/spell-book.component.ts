@@ -7,7 +7,7 @@ import { ScryfallAPIService } from '../../../shared/scryfallAPI/scyfall-api.serv
 import { Card, CardVersion } from '../../../shared/models/card';
 import { MessageService } from '../../../shared/messages/services/messages.service';
 import { FormControl, FormGroup } from '@angular/forms';
-import { SetFilterComponent } from '../../../card-filter/set-filter/components/set-filter.component';
+import { SetFilterComponent } from '../../../card-filter/set-filter/set-filter/components/set-filter.component';
 
 
 @Component({
@@ -37,6 +37,7 @@ export class SpellBookComponent {
   url : string = "https://api.scryfall.com/cards/mom/230?format=image";
   
   @ViewChild(CardFilterComponent) private cardFilter! : CardFilterComponent;
+  @ViewChild(SetFilterComponent) private setFilter! : SetFilterComponent;
 
   ngOnInit(): void {
     this.getAllCards();
@@ -48,7 +49,7 @@ export class SpellBookComponent {
 
   FilterCollection() : void {
     let query = this.cardFilter.ReadData();
-    query.Setname = this.set;
+    query.Sets = this.setFilter.ReadData();
     
     // Enable or disable show missing
     if(this.spellbookForm.value.missingControl != undefined)

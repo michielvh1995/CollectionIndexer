@@ -1,12 +1,8 @@
 $baseheight: 370px;
 $basewidth: 265px;
 
-$cardwidth: 255px;
+$cardwidth: 180px;
 $cardheight: calc($baseheight/$basewidth*$cardwidth);
-
-$sidebarClosedWidth: 56px;
-$sidebarOpenWidth: 250px;
-
 
 .spell-book-container {
     display: grid;
@@ -16,9 +12,6 @@ $sidebarOpenWidth: 250px;
     text-align: left;
     left: 0;
     top: 0;
-}
-.sets {
-    background-color: red;
 }
 
 

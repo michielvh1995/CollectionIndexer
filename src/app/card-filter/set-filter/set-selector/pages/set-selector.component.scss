@@ -1,0 +1,143 @@
+$sidebarClosedWidth: 60px;
+$sidebarOpenWidth: 300px;
+
+.set-options {
+    // background-image: url("../../../../assets/img/spellbooktexture.png");
+    background-color: rgb(10, 10, 10);
+    max-width: $sidebarOpenWidth - 1px;
+    position: relative;
+    display:inline-block;
+
+    color:rgb(237, 184, 50);
+    
+    border-style: solid;
+    border-color: lightgray;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-right-width: 0px;
+
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+    // height: $sidebarClosedWidth;
+
+    label {
+      width: 100%;
+      height: 100%;
+      min-height: $sidebarClosedWidth;
+    }
+  
+    input[type=checkbox] {
+      display: none;
+    }
+  
+    input[type=checkbox] + label {
+      display:inline-block;
+      padding: 0 0 0 0px;
+    }
+  
+    input[type=checkbox]:checked + label {
+      box-shadow: 0 0 4px 5px rgb(239, 205, 34) inset;
+      border-radius: inherit;
+    }
+}
+
+.expanded-set {
+  margin: 5px;
+  margin-right: 0px;
+  margin-right: 0px;
+
+  input[type=checkbox] {
+    display:inline;
+  }
+}
+
+
+
+.set-name {
+  font-size: 1.1em;
+  margin-left: 5px;
+}
+
+.closed { 
+    width: $sidebarClosedWidth;
+    text-align: center;
+    
+    img {
+      display: block;
+      position: absolute;
+      margin: auto;
+      top: 50%;
+      transform: translateY(-50%);
+      
+      max-height: $sidebarClosedWidth - 8px;
+      max-width: $sidebarClosedWidth - 8px;
+      width: 100%;
+      height: 100%;
+      
+      // Filter has been calculated using: https://codepen.io/sosuke/pen/Pjoqqp
+      // The drop-shadow was added to add the shine to it. Target colours are #977E44 (dark), and DBC074 (bright)
+      filter: invert(93%) sepia(83%) saturate(611%) hue-rotate(321deg) drop-shadow(#977E44 0 0 10px);
+    }
+}
+
+.closed-set {
+    display: block;
+    position: absolute;
+    margin: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    height: $sidebarClosedWidth;
+    width: $sidebarClosedWidth - 8px;
+}
+
+.open {
+  width: $sidebarOpenWidth;
+  text-align: left;
+
+  .set-options {
+    width: $sidebarOpenWidth -1px;
+    border-end-start-radius: 6px;
+    border-start-start-radius: 6px;
+
+    margin-bottom: 2px;
+  }
+
+  label {
+    padding-top: 4px;
+  }
+
+  img {
+    margin-top: 4px;
+    max-height: calc($sidebarClosedWidth/4);
+    max-width: calc($sidebarClosedWidth/4);
+    filter: invert(93%) sepia(83%) saturate(611%) hue-rotate(321deg);
+  }
+}
+
+
+
+.childless {
+    img {
+      display: inline;
+      position: relative;
+      margin: auto;
+      margin-top: 4px;
+      margin-left: 6px;
+
+      vertical-align: middle;
+      
+      max-height: $sidebarClosedWidth - 8px;
+      max-width: $sidebarClosedWidth - 8px;
+
+      filter: invert(93%) sepia(83%) saturate(611%) hue-rotate(321deg) drop-shadow(#977E44 0 0 10px);
+    }
+    span {
+      vertical-align: middle;
+      margin-left: 5px;
+
+      display: inline;
+      position: relative;
+      margin: auto;
+    }
+}

@@ -63,6 +63,7 @@ export class CardSelection extends BaseSelection {
       if(this.Setname) query += `+set:${this.Setname}`;
       if(this.Colours) query += `+${this.Colours.ToScryfallQuery()}`;
       if(this.Rarities) query += `+${this.Rarities.ToScryfallQuery()}`;
+      if(this.Sets) query += `+${this.Sets.ToScryfallQuery()}`;
       return query;
     }
 
@@ -228,7 +229,7 @@ export class RaritySelection extends BaseSelection {
 }
 
 export class SetSelection extends BaseSelection {
-  constructor(public Sets : string[] = [], public MatchType : string = '=') { super(); }
+  constructor(public Sets : string[] = []) { super(); }
   
   public First() : string {
     if(this.Sets[0])
@@ -241,8 +242,12 @@ export class SetSelection extends BaseSelection {
   public ToList() : string[] { return this.Sets; }
 
   public ToDictionary() : { [key: string]: any; } { 
-    return { 'SetMatchType' : this.MatchType, 'sets': this.Sets }; 
+    return { 'sets': this.Sets }; 
   }
   
-  public ToScryfallQuery() : string { return ""; }
+  public ToScryfallQuery() : string {
+    if(!this.Validate() || this.Sets.length === 0) return "";
+
+    return `(s:${this.Sets.join('+or+s:')})`; 
+  }
 }
