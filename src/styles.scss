@@ -1,1 +1,45 @@
-/* You can add global styles to this file, and also import other style files */
+// /* You can add global styles to this file, and also import other style files */
+[data-theme="dark"] {
+    background-color: rgb(30,30,30);
+    color: white;
+
+    .colourSelection {
+        #w:checked + label{
+            box-shadow: 0 0 0 4px rgba(248, 231, 185,1);
+            // box-shadow: 0 0 0 3px black;
+        }
+        #u:checked + label{
+            box-shadow: 0 0 0 4px rgba(14, 104, 231,1);
+        }
+        #b:checked + label{
+            box-shadow: 0 0 0 4px rgb(139, 54, 172);
+        }
+        #r:checked + label{
+            box-shadow: 0 0 0 4px rgba(211, 32, 42,1);
+        }
+        #g:checked + label{
+            box-shadow: 0 0 0 4px rgba(0, 175, 62,1);
+        }
+        #c:checked + label{
+            box-shadow: 0 0 0 4px rgba(180, 180, 180, 1);
+        }
+    }
+
+    .SelectionFilter {
+    #common:checked + label {
+        box-shadow: 0 0 0 4px white;
+    }
+    #uncommon:checked + label {
+        box-shadow: 0 0 0 4px silver;
+    }
+    #rare:checked + label {
+        box-shadow: 0 0 0 4px gold;
+    }
+    #mythic:checked + label {
+        box-shadow: 0 0 0 4px orangered;
+    }
+    #special:checked + label {
+        box-shadow: 0 0 0 4px purple;
+    }
+    }
+}

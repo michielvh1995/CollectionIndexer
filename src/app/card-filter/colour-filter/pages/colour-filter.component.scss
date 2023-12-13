@@ -64,24 +64,24 @@
     background-image:url("../../../../assets/img/colourlessicon.svg");
   }
 
-  #w:checked + label{
-    // box-shadow: 0 0 0 4px rgba(248, 231, 185,0.6);
-    box-shadow: 0 0 0 3px black;
-  }
-  #u:checked + label{
-    box-shadow: 0 0 0 4px rgba(14, 104, 171,0.6);
-  }
-  #b:checked + label{
-    box-shadow: 0 0 0 4px rgba(21,11,0,0.6);
-  }
-  #r:checked + label{
-    box-shadow: 0 0 0 4px rgba(211, 32, 42,0.6);
-  }
-  #g:checked + label{
-    box-shadow: 0 0 0 4px rgba(0, 115, 62,0.6);
-  }
-  #c:checked + label{
-    box-shadow: 0 0 0 4px rgba(0, 0, 0,0.6);
-  }
+  // #w:checked + label{
+  //   box-shadow: 0 0 0 4px rgba(248, 231, 185,0.6);
+  //   // box-shadow: 0 0 0 3px black;
+  // }
+  // #u:checked + label{
+  //   box-shadow: 0 0 0 4px rgba(14, 104, 171,0.6);
+  // }
+  // #b:checked + label{
+  //   box-shadow: 0 0 0 4px rgba(21,11,0,0.6);
+  // }
+  // #r:checked + label{
+  //   box-shadow: 0 0 0 4px rgba(211, 32, 42,0.6);
+  // }
+  // #g:checked + label{
+  //   box-shadow: 0 0 0 4px rgba(0, 115, 62,0.6);
+  // }
+  // #c:checked + label{
+  //   box-shadow: 0 0 0 4px rgba(0, 0, 0,0.6);
+  // }
 }
 

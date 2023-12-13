@@ -1,0 +1,53 @@
+<div class="set-bar" [ngClass]="expanded ? 'open' : 'closed'">
+    <Button id="expand" (click)="ToggleSideBar()">
+        <span *ngIf="!expanded">-></span>
+        <span *ngIf="expanded"><- Close</span>
+    </Button>
+    <span class="set-search">
+        <form (submit)="FilterSets()">
+            <input type="text" placeholder="Search" [(ngModel)]="searchValue" [ngModelOptions]="{standalone: true}">
+            <button type="reset" id="reset-search-button" (click)="ResetSearch()">X</button>
+            <button (click)="FilterSets()" *ngIf="expanded" id="searchbutton">
+                Search
+            </button>
+            <button type="reset" id="reset-selection-button" (click)="Reset()">
+                Reset
+            </button>
+        </form>
+    </span>
+    <div class="set-selector">
+        <span *ngFor="let set of active_sets">
+        <app-set-selector [set]=set [expanded]="expanded"></app-set-selector>
+
+        <!--
+            The new way, using checkboxes and their labels
+            <div class = "set-options">
+                <input class="set-selector" name='{{set.code}}' value='{{set.code}}' id ='{{set.code}}' type="checkbox">
+                <label id='{{set.code}}l' for='{{set.code}}'>
+                    <div *ngIf="!expanded" class="closed-set">
+                        <img src="{{set.icon}}">
+                        {{set.code}}
+                    </div>
+                    One display option is to keep the icon large for the sets that do not have child sets
+                    <span *ngIf="expanded" [ngClass]="set.children.length ? 'expanded-set' : 'childless'" class="">
+
+                    <span *ngIf="expanded" class="expanded-set">
+                        <span>
+                            <img src="{{set.icon}}">
+                            <span class="set-name">
+                                {{set.name}}
+                            </span>
+                        </span>
+                        
+                        <div *ngFor="let child of set.children">
+                            <input type="checkbox">
+                            {{child.name}}
+                        </div>
+                    </span>
+                </label>
+            </div>
+        -->
+
+        </span>
+    </div>
+</div>

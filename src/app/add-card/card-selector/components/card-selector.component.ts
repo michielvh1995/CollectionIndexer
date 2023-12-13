@@ -2,7 +2,6 @@ import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Card, CardVersion } from '../../../shared/models/card';
 import { CollecteDBService } from '../../../shared/collecteDB/collecte-db.service';
-import { CardDisplayComponent } from '../../../card-display/card-display/components/card-display.component';
 
 @Component({
   selector: 'app-card-selector',
@@ -43,20 +42,19 @@ export class CardSelectorComponent {
   // failure -> submitted, but failed
   public Status : string = "none";
 
-
   // Set the values retrieved from the scryfall API locally
   // Then we calculate all fields that are derived from them (i.e. the form control)
   setInformation() {
-    if(this.card.versions[0].possible_finishes !== undefined) 
+    console.log("On init of the card-selector we still have the rarity.");
+    console.log(this.card);
+    
+    if(this.card.versions[0].possible_finishes !== undefined) {
       this.finishes=this.card.versions[0].possible_finishes;
-    else {
+    } else {
       console.error(`No possible finishes found for ${this.card.name}!`);
       return;
     }
 
-    if(this.card.versions[0].possible_finishes !== undefined) 
-      this.finishes=this.card.versions[0].possible_finishes;
-      
     this.setupFormControl();    
   }
 
@@ -75,13 +73,24 @@ export class CardSelectorComponent {
   public SubmitCards() {
     if(this.Submitted) return;
 
+    console.log("Card-selector, before readData()");  
+    console.log(this.card);
+    
+
     this.readData();
     
     // Set submitted
     this.Submitted = true;
     this.Status = "pending";
     this.ref.detectChanges();
+
+    console.log("We're now submitting cards in card-selector");
+    console.log(this.card);
+    console.log("We're lacking the rarity field here.");
     
+    
+    
+
     this.collecteDBService.postNewCards([this.card]).subscribe(res => {
       if(!res) {
         this.Status = "failure";
@@ -95,8 +104,6 @@ export class CardSelectorComponent {
         this.ref.detectChanges();
       }
     });
-
-
   }
 
   public totalSelected = 0;
@@ -125,27 +132,13 @@ export class CardSelectorComponent {
   // Here we can use the card.versions[0] for the values of the multiverseID etc,
   // because input is a single card with a version. We use that CardVersion for the scryfall API aswell
   private generateVersion(finish : string, count : number) : CardVersion {
-    // DEBUG:
-    console.log(`${this.card.name} (${finish}): ${count}`);
-
     return {
       "card_count" : count,
       "multiverseID" : this.card.versions[0].multiverseID,
       "set_code" : this.card.versions[0].set_code,
       "number" : this.card.versions[0].number,
-      
-      // TEMPORARY: Remove this with the updated card model
-      "foil" : (finish !== "nonfoil"),
-      // "finish" : finish
+      "rarity" : this.card.versions[0].rarity,      
+      "finish" : finish
     } 
   }
-
-
-
-
-
-     
-
-
-
 }

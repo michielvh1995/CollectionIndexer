@@ -1,0 +1,50 @@
+<div class="spell-book-container">
+    <div class="sets">
+        <app-set-filter></app-set-filter>
+    </div>
+
+    <div class="right">
+        <div class="card-filter-form" [formGroup]="spellbookForm">
+            <span class="missing-options">
+                <span>Show missing: <input type="checkbox" formControlName="missingControl"></span>
+                <span>Boosterfun: <input type="checkbox" formControlName="boosterfunControl"></span>
+            </span>
+            <app-card-filter [enableSet]="false" name="cardFilter"></app-card-filter>
+            <button (click)="FilterCollection()">Filter</button>
+            <button (click)="Reset()">Reset</button>
+
+            <span id="countdisplay">
+                <span *ngIf="showMissing">
+                  {{collectedCount}} of {{cards.length}} cards in collection.
+                </span>
+                <span *ngIf="!showMissing">
+                    Displaying {{cards.length}} cards
+                </span>
+            </span>
+        </div>
+
+        <div class="card-display">
+            <span class="card-container" *ngFor="let crd of this.cards">
+                <div [ngClass]="crd.missing ? 'missing' : 'here'"> </div>
+                <div class="display" >
+                    <app-card-display [card]="crd"></app-card-display>
+                </div>
+                <span>
+                    <span *ngIf="!crd.missing">
+                        <span *ngFor="let ver of crd.versions" class="count-container">
+                            <span>{{ver.finish}}:</span>
+                            <span class="count-div">{{ver.card_count}}</span>
+                        </span>
+                    </span>
+                    <span *ngIf="crd.missing">
+                        <span class="count-container">
+                            <span>Missing!</span>
+                        </span>
+                    </span>
+                </span>
+            </span>
+        </div>
+
+    </div>
+    
+</div>

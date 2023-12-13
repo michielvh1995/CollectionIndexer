@@ -1,8 +1,9 @@
-import { Component, ViewChild, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { ColourFilterComponent } from '../../colour-filter/components/colour-filter.component';
 import { FormControl, FormGroup } from '@angular/forms';
 import { CardSelection } from '../../../shared/models/filters';
 import { RarityFilterComponent } from '../../rarity-filter/components/rarity-filter.component';
+
 
 @Component({
   selector: 'app-card-filter',
@@ -10,8 +11,11 @@ import { RarityFilterComponent } from '../../rarity-filter/components/rarity-fil
   styleUrls: ['../pages/card-filter.component.scss']
 })
 export class CardFilterComponent {
+  @Input() enableSet : boolean = true;
+
   @ViewChild(ColourFilterComponent) private colourSelector! : ColourFilterComponent;
   @ViewChild(RarityFilterComponent) private raritySelector! : RarityFilterComponent;
+
 
   cardSelectorForm = new FormGroup({
     cardNameControl: new FormControl(''),
@@ -31,7 +35,7 @@ export class CardFilterComponent {
   }
 
   public Validate() {
-    if(this.cardSelectorForm.value.cardNameControl == "" && this.cardSelectorForm.value.cardSetControl == "") return false;
+    // if(this.cardSelectorForm.value.cardNameControl == "" && this.cardSelectorForm.value.cardSetControl == "") return false;
     if(!this.colourSelector.Validate()) return false;
     if(!this.raritySelector.Validate()) return false;
     return true;
@@ -44,8 +48,8 @@ export class CardFilterComponent {
 
     var strictName = false;
     if(this.cardSelectorForm.value.cardStrictNameControl)
-      strictName = true;    
+      strictName = true;
 
-    return new CardSelection(cardName, strictName, cardSet, this.colourSelector.ReadData(), this.raritySelector.ReadData());
+    return new CardSelection(cardName, strictName, cardSet, undefined, this.colourSelector.ReadData(), this.raritySelector.ReadData());
   }
 }
