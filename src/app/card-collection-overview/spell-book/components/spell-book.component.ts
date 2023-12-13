@@ -90,20 +90,6 @@ export class SpellBookComponent {
     });
   }
 
-  TrickleDownUpdates() : void {
-    
-    this.collecteDBService.UpdateCards(this.cards).subscribe(res => {
-      if(!res) {
-        this.ref.detectChanges();
-        console.log(`Failure to submit;`);
-        
-      } else {
-        console.log("Success");  
-        this.ref.detectChanges();
-      }
-    });
-  }
-
   getAllCards() : void {
     this.collecteDBService.getSomeCards(40).subscribe(
       fetched => {
