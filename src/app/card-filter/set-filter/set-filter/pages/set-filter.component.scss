@@ -4,13 +4,13 @@ $sidebarOpenWidth: 300px;
 
 .set-search {
   margin-top: 2px;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
   border-bottom: 3px solid darkgrey;
 
   input[type=text] {
     border-top-left-radius: 6px;
     border-bottom-left-radius: 0px;
-    height: $sidebarClosedWidth /3;
+    height: calc($sidebarClosedWidth /3);
     width: 77%
   }
 
@@ -47,7 +47,7 @@ $sidebarOpenWidth: 300px;
     border-top-right-radius: 0px;
     border-bottom-right-radius: 6px;
     border-bottom-left-radius: 6px;
-    height: $sidebarClosedWidth /3;
+    height: calc($sidebarClosedWidth /3);
     // margin-left: 1px;
     width: 100%;
   }
@@ -84,7 +84,7 @@ $sidebarOpenWidth: 300px;
 
   .set-search {
     input[type=text] {
-      width: $sidebarClosedWidth - 7px;
+      width: $sidebarClosedWidth - 5px;
       border-top-right-radius: 6px;
       border-bottom-right-radius: 0px;
     }
