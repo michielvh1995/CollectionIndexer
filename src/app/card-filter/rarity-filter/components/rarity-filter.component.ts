@@ -7,7 +7,8 @@ import { BaseFilterComponent } from '../../base-filter/base-filter.component';
   selector: 'app-rarity-filter',
   templateUrl: '../pages/rarity-filter.component.html',
   styleUrls: [
-      '../pages/rarity-filter.component.scss'
+      '../pages/rarity-filter.component.scss',
+      '../../base-filter/base-filter.component.scss'
     ]
 })
 export class RarityFilterComponent extends BaseFilterComponent{
@@ -41,4 +42,8 @@ export class RarityFilterComponent extends BaseFilterComponent{
     
     return new RaritySelection(rarityArray);
   }
+  public Reset(): void {
+    this.raritySelection.reset();
+    }
+
 }

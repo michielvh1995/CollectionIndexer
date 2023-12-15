@@ -6,7 +6,10 @@ import { FormBuilder, FormControl } from '@angular/forms';
 @Component({
   selector: 'app-set-selector',
   templateUrl: '../pages/set-selector.component.html',
-  styleUrls: ['../pages/set-selector.component.scss']
+  styleUrls: [
+    '../pages/set-selector.component.scss',
+    '../../../base-filter/base-filter.component.scss'
+  ]
 })
 export class SetSelectorComponent {
   constructor(private fb : FormBuilder) { }

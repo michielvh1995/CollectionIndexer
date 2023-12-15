@@ -11,4 +11,5 @@ export abstract class BaseFilterComponent {
   public abstract Enable() : void;
   public abstract Validate() : boolean;
   public abstract ReadData() : BaseSelection;
+  public abstract Reset() : void;
 }

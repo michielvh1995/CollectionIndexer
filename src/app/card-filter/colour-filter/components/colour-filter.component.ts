@@ -6,7 +6,10 @@ import { BaseFilterComponent } from '../../base-filter/base-filter.component';
 @Component({
   selector: 'app-colour-filter',
   templateUrl: '../pages/colour-filter.component.html',
-  styleUrls: ['../pages/colour-filter.component.scss']
+  styleUrls: [
+    '../pages/colour-filter.component.scss',
+    '../../base-filter/base-filter.component.scss'
+  ]
 })
 
 export class ColourFilterComponent extends BaseFilterComponent {
@@ -50,5 +53,9 @@ export class ColourFilterComponent extends BaseFilterComponent {
       this.colourSelection.value.matchControl!);
 
     return colourFilter;
+  }
+
+  public Reset(): void {
+    this.colourSelection.reset();
   }
 }

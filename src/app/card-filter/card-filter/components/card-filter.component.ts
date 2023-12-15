@@ -3,6 +3,7 @@ import { ColourFilterComponent } from '../../colour-filter/components/colour-fil
 import { FormControl, FormGroup } from '@angular/forms';
 import { CardSelection } from '../../../shared/models/filters';
 import { RarityFilterComponent } from '../../rarity-filter/components/rarity-filter.component';
+import { BaseFilterComponent } from '../../base-filter/base-filter.component';
 
 
 @Component({
@@ -10,7 +11,7 @@ import { RarityFilterComponent } from '../../rarity-filter/components/rarity-fil
   templateUrl: '../pages/card-filter.component.html',
   styleUrls: ['../pages/card-filter.component.scss']
 })
-export class CardFilterComponent {
+export class CardFilterComponent implements BaseFilterComponent {
   @Input() enableSet : boolean = true;
 
   @ViewChild(ColourFilterComponent) private colourSelector! : ColourFilterComponent;
@@ -52,4 +53,11 @@ export class CardFilterComponent {
 
     return new CardSelection(cardName, strictName, cardSet, undefined, this.colourSelector.ReadData(), this.raritySelector.ReadData());
   }
+
+  public Reset(): void {
+    this.cardSelectorForm.reset();
+    this.colourSelector.Reset();
+    this.raritySelector.Reset();
+  }
+
 }

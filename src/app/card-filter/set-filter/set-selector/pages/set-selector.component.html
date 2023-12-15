@@ -1,10 +1,12 @@
 <div [formGroup]="setsForm" class="set-options"  [ngClass]="expanded ? 'open' : 'closed'">
     <input class="set-selector" name='{{set.code}}' value='{{set.code}}' id ='{{set.code}}' type="checkbox" formControlName="parentControl">
-    <label id='{{set.code}}l' for='{{set.code}}'>
+    <label *ngIf="!expanded" id='{{set.code}}l' for='{{set.code}}' [attr.data-tooltip]="set.name">
         <div *ngIf="!expanded" class="closed-set">
             <img src="{{set.icon}}">
             <!-- {{set.code}} -->
         </div>
+    </label>
+    <label *ngIf="expanded" id='{{set.code}}l' for='{{set.code}}'>
         <!-- One display option is to keep the icon large for the sets that do not have child sets -->
         <span *ngIf="expanded" [ngClass]="set.children.length ? 'expanded-set' : 'childless'">
             <span>
@@ -21,4 +23,25 @@
             </div>
         </span>
     </label>
+<!-- 
+    <label id='{{set.code}}l' for='{{set.code}}' [attr.data-tooltip]="set.name">
+        <div *ngIf="!expanded" class="closed-set">
+            <img src="{{set.icon}}">
+        </div>
+        <span *ngIf="expanded" [ngClass]="set.children.length ? 'expanded-set' : 'childless'">
+            <span>
+                <img src="{{set.icon}}">
+                <span class="set-name">
+                    {{set.name}}
+                </span>
+            </span>
+            <div formArrayName="childSelectors">
+                <div *ngFor="let child of set.children; let i=index">
+                    <input type="checkbox" [formControlName]="i" value="{{child.code}}">
+                    {{child.name}}
+                </div>    
+            </div>
+        </span>
+    </label> -->
+    
 </div>
