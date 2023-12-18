@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { CardSelection, ColourSelection } from '../../../shared/models/filters';
+import { ColourSelection } from '../../../shared/models/filters';
 import { BaseFilterComponent } from '../../base-filter/base-filter.component';
 
 @Component({

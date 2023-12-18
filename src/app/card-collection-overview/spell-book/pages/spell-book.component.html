@@ -7,7 +7,7 @@
         <div class="card-filter-form" [formGroup]="spellbookForm">
             <span class="missing-options">
                 <span>Show missing: <input type="checkbox" formControlName="missingControl"></span>
-                <span>Show all printings: <input type="checkbox" formControlName="boosterfunControl"></span>
+                <!-- <span>Show all printings: <input type="checkbox" formControlName="boosterfunControl"></span> -->
             </span>
             <app-card-filter [enableSet]="false" name="cardFilter"></app-card-filter>
             <button (click)="FilterCollection()">Filter</button>

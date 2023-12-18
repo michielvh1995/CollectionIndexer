@@ -1,7 +1,7 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { ColourFilterComponent } from '../../colour-filter/components/colour-filter.component';
 import { FormControl, FormGroup } from '@angular/forms';
-import { CardSelection } from '../../../shared/models/filters';
+import { CardSelection, SetSelection } from '../../../shared/models/filters';
 import { RarityFilterComponent } from '../../rarity-filter/components/rarity-filter.component';
 import { BaseFilterComponent } from '../../base-filter/base-filter.component';
 
@@ -17,11 +17,12 @@ export class CardFilterComponent implements BaseFilterComponent {
   @ViewChild(ColourFilterComponent) private colourSelector! : ColourFilterComponent;
   @ViewChild(RarityFilterComponent) private raritySelector! : RarityFilterComponent;
 
-
   cardSelectorForm = new FormGroup({
     cardNameControl: new FormControl(''),
     cardStrictNameControl : new FormControl(false),
-    cardSetControl: new FormControl('')
+    boosterfunControl : new FormControl(false),
+    cardSetControl: new FormControl(''),
+    cardOrdering : new FormControl('set')
   });
 
   public Disable() : void {
@@ -47,11 +48,29 @@ export class CardFilterComponent implements BaseFilterComponent {
     var cardName = this.cardSelectorForm.value.cardNameControl?.trim().toLowerCase();
     var cardSet = this.cardSelectorForm.value.cardSetControl?.trim().toLowerCase();
 
+    let ordering;
+    if(this.cardSelectorForm.value.cardOrdering)
+      ordering = this.cardSelectorForm.value.cardOrdering;
+
+     // Enable or disable boosterfun.
+    let uniqueType = "name";
+    if(this.cardSelectorForm.value.boosterfunControl === true) uniqueType = "prints";
+
+    console.log(`${uniqueType}, because boosterfun is ${this.cardSelectorForm.value.boosterfunControl}`);
+    
+
     var strictName = false;
     if(this.cardSelectorForm.value.cardStrictNameControl)
       strictName = true;
 
-    return new CardSelection(cardName, strictName, cardSet, undefined, this.colourSelector.ReadData(), this.raritySelector.ReadData());
+    let selection = new CardSelection(cardName, strictName, undefined, ordering, 1, uniqueType);
+    selection.AddFilter(this.colourSelector.ReadData());
+    selection.AddFilter(this.raritySelector.ReadData());
+    
+    if(cardSet)
+      selection.AddFilter(new SetSelection([cardSet]));
+
+    return selection;
   }
 
   public Reset(): void {

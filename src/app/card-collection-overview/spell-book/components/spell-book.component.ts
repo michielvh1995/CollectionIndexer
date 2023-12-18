@@ -26,7 +26,7 @@ export class SpellBookComponent {
 
   spellbookForm = new FormGroup({
     missingControl : new FormControl(false),
-    boosterfunControl : new FormControl(false),
+    // boosterfunControl : new FormControl(false),
   });
   
   collectedCount : number = 0;
@@ -50,21 +50,17 @@ export class SpellBookComponent {
 
   FilterCollection() : void {
     let query = this.cardFilter.ReadData();
-    query.Sets = this.setFilter.ReadData();
+    query.AddFilter(this.setFilter.ReadData());
     
     // Enable or disable show missing
     if(this.spellbookForm.value.missingControl != undefined)
       this.showMissing = this.spellbookForm.value.missingControl;
 
-    // Enable or disable boosterfun.
-    let uniqueType = "name";
-    if(this.spellbookForm.value.boosterfunControl === true) uniqueType = "prints";
-    
     let ownCards : Card[] = [];
 
     // let pageNo = 1;
     // We need to call the scryfallAPI service for the cards from scryfall....
-    this.scryfallService.new_searchForCards(query.ToScryfallQuery(), 1, uniqueType).subscribe(fetched => {
+    this.scryfallService.new_searchForCards(query.ToScryfallQuery(), 1, query.UniquesType).subscribe(fetched => {
       let queriedCards = this.scryfallService.scryfallListToCards(fetched);
 
       if(fetched.has_more) console.log("there's pagination...");

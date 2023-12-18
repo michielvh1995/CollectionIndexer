@@ -1,8 +1,8 @@
 <span class="selector-form" [formGroup]="cardSelectorForm">    
     <input id="card-name" placeholder="Name" type ="text" formControlName="cardNameControl">
-    <span class="vertical">
-        <label for="card-strict-name">Strict</label>
-        <input id="card-strict-name" type ="checkbox" formControlName="cardStrictNameControl">
+    <span class="missing-options">
+        <span>Strict name: <input id="card-strict-name" type ="checkbox" formControlName="cardStrictNameControl"></span>
+        <span>Show all printings: <input type="checkbox" formControlName="boosterfunControl"></span>
     </span>
     <span *ngIf="enableSet">
         <input id="card-set" placeholder="Set" type ="text" formControlName="cardSetControl">
@@ -10,4 +10,16 @@
 
     <app-colour-filter></app-colour-filter>
     <app-rarity-filter></app-rarity-filter>
+
+    <select name="cardOrdering" id="card-ordering" formControlName="cardOrdering">
+        <option value="set">Set & Number</option>
+        <option value="name">Name</option>
+        <option value="rarity">Rarity</option>
+        <option value="color">Colour</option>
+        <option value="cmc">Mana Cost</option>
+    </select>
+    
+    <button (click)="Reset()" type="reset">
+        Reset
+    </button>
 </span>

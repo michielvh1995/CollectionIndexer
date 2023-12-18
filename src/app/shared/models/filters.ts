@@ -1,10 +1,15 @@
 export abstract class BaseSelection {
   public abstract Validate() : boolean;
   public abstract ToScryfallQuery() : string;
+  public abstract ToCollecteDBQuery() : string;
   public abstract ToDictionary() : {[key:string]: any};
+
 }
 
-export class CardSelection extends BaseSelection {
+export class CardSelectionOLD extends BaseSelection {
+    public ToCollecteDBQuery(): string {
+      throw new Error("Method not implemented.");
+    }
     public Colours? : ColourSelection;
     public Rarities? : RaritySelection;
     public Sets? : SetSelection;
@@ -12,7 +17,7 @@ export class CardSelection extends BaseSelection {
     public Name? : string;
     public StrictName : boolean = false;
     public Number? : string;
-    
+    public Ordering? : string;
 
     public Setname? : string;
 
@@ -27,7 +32,8 @@ export class CardSelection extends BaseSelection {
         rarityFilter? : RaritySelection,
         setFilter? : SetSelection,
         page? : number,
-        uniques? : string) 
+        uniques? : string,
+        ordering? : string) 
     {
       super();
 
@@ -39,6 +45,7 @@ export class CardSelection extends BaseSelection {
       this.Setname = set;
       this.PageNo = page;
       this.UniquesType = uniques;
+      this.Ordering = ordering;
 
       if(strictName != undefined)
         this.StrictName = strictName;
@@ -61,6 +68,7 @@ export class CardSelection extends BaseSelection {
           query+= `name:${this.Name}`;
       
       if(this.Setname) query += `+set:${this.Setname}`;
+      if(this.Ordering) query += `+order:${this.Ordering}`;
       if(this.Colours) query += `+${this.Colours.ToScryfallQuery()}`;
       if(this.Rarities) query += `+${this.Rarities.ToScryfallQuery()}`;
       if(this.Sets) query += `+${this.Sets.ToScryfallQuery()}`;
@@ -83,24 +91,21 @@ export class CardSelection extends BaseSelection {
     }
   }
 
-export class CardSelectionGeneric extends CardSelection {
+export class CardSelection extends BaseSelection {
   public Filters : BaseSelection[];
 
   constructor(
-    Name? : string, 
-    StrictName : boolean = false,
-    Number? : string,
-    colourFilter? : ColourSelection,
-    rarityFilter? : RaritySelection,
-    setFilter? : SetSelection,
-    PageNo : number = 1)
+    public Name? : string, 
+    public StrictName : boolean = false,
+    public Number? : string,
+    public Ordering? : string,
+    public PageNo : number = 1,
+    public UniquesType? : string
+    )
   {
-    super(Name, StrictName, Number, undefined, undefined, undefined, undefined, PageNo);
-    
+    super();
+
     this.Filters = [];
-    if(colourFilter) this.Filters.push(colourFilter);
-    if(rarityFilter) this.Filters.push(rarityFilter);
-    if(setFilter) this.Filters.push(setFilter);
   }
 
   public AddFilter(filter : BaseSelection) : void {
@@ -120,12 +125,43 @@ export class CardSelectionGeneric extends CardSelection {
     if(this.Name) dict["name"] = this.Name;
     if(this.Number) dict["number"] = this.Number;
     if(this.PageNo) dict["page"] = this.PageNo;
+    if(this.UniquesType) dict["uniquetype"] = this.UniquesType;
 
     // Then we add all the key-value pairs from the fitlers to this one:
     for (let i = 0; i < this.Filters.length; i++)
       dict = {... dict,...this.Filters[i].ToDictionary};
 
     return dict;
+  }
+
+  public override ToScryfallQuery(): string {
+    let query : string = "";
+    
+    if(this.Name)
+      if(this.StrictName)
+        query+= `name:"${this.Name}"`;
+      else
+        query+= `name:${this.Name}`;
+
+    if(this.Number) query += `+number:${this.Number}`;
+    if(this.Ordering) query += `+order:${this.Ordering}`;
+
+    for(const filter of this.Filters)
+      query += `+${filter.ToScryfallQuery()}`;
+      
+    return query;
+  }
+
+  public override ToCollecteDBQuery(): string {
+    let queries : string[] = [];
+    if(this.Name) queries.push(`name=${this.Name}`);
+    if(this.Number) queries.push(`number=${this.Number}`)
+
+    for(const filter of this.Filters)
+      if(filter.Validate())
+        queries.push(filter.ToCollecteDBQuery());
+    
+    return `?${queries.join("&")}`;
   }
 }
 
@@ -188,6 +224,15 @@ export class ColourSelection extends BaseSelection {
     return `(id${this.MatchType}${query})`;
   }
 
+  public ToCollecteDBQuery() : string {
+    let list = this.ToList();
+    
+    if(list.length)
+      return `cmt=${this.MatchType}&colours=${list.join()}`;
+    else 
+      return "";
+  }
+
   public ToDictionary(): { [key: string]: any; } {
     return { 'ColourMatchType': this.MatchType, 'colours': this.ToList() };
   }
@@ -208,6 +253,7 @@ export class ColourSelection extends BaseSelection {
 }
 
 export class RaritySelection extends BaseSelection {
+
   constructor(public Rarities : string[] = [], public MatchType : string = '=') {
     super();
   }
@@ -225,6 +271,14 @@ export class RaritySelection extends BaseSelection {
     query = `(r:${this.Rarities?.join('+or+r:')})`
     
     return query;
+  }  
+  
+  public ToCollecteDBQuery(): string {
+    let list = this.ToList();
+    if(list.length)
+      return `rarity=${list.join()}`
+    else
+      return "";
   }
 }
 
@@ -249,5 +303,9 @@ export class SetSelection extends BaseSelection {
     if(!this.Validate() || this.Sets.length === 0) return "";
 
     return `(s:${this.Sets.join('+or+s:')})`; 
+  }
+  
+  public ToCollecteDBQuery(): string {
+    return `set_code=${this.First()}`;
   }
 }

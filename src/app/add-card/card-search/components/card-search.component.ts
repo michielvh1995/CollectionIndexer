@@ -42,7 +42,9 @@ export class CardSearchComponent {
     }
 
     private queryCards() {
-      this.scryfallAPIService.new_searchForCards(this.cardFilter.ReadData().ToScryfallQuery(), this.pageNo).subscribe(fetched => {
+      let query = this.cardFilter.ReadData();
+
+      this.scryfallAPIService.new_searchForCards(query.ToScryfallQuery(), this.pageNo, query.UniquesType).subscribe(fetched => {
         if(fetched.has_more) this.HasMore = true; // I love the way this boolean evaluates here
         else this.HasMore = false;
         

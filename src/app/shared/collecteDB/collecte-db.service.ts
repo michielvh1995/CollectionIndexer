@@ -51,27 +51,7 @@ export class CollecteDBService  {
     }
 
     queryCards(filters: CardSelection) : Observable<Card[]> {
-      
-      var queries : string[] = []
-      if(filters.Name)
-        queries.push(`name=${filters.Name}`);
-      if(filters.Setname)
-        queries.push(`set_code=${filters.Setname}`);
-      if(filters.Number)
-        queries.push(`number=${filters.Number}`);
-      if(filters.Sets && filters.Sets.Validate())
-        queries.push(`set_code=${filters.Sets.First()}`);
-
-      // Parameterize the colourfilter
-      if(filters.Colours && filters.Colours.Validate() && filters.Colours.ToList().length > 0) {
-        queries.push(`colours=${filters.Colours.ToList().join()}`);
-        queries.push(`cmt=${filters.Colours.MatchType}`);
-      }
-      if(filters.Rarities && filters.Rarities.Validate()) {
-        queries.push(`rarity=${filters.Rarities.ToList().join()}`);
-      }
-
-      var queryString = `?${queries.join("&")}`;
+      var queryString = filters.ToCollecteDBQuery();
       this.log(`Querying: ${this.apiURL}cards${queryString}`);
 
       // And then we query the server, with the query string
